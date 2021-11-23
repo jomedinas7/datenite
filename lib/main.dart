@@ -2,6 +2,47 @@ import 'package:flutter/material.dart';
 
 import 'home.dart';
 
+
+/*
+JAVA
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+TASTE OF DeEZ NUTS
+
+
+
+ */
+
 void main() {
   runApp(MyApp());
 }
