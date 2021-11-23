@@ -1,11 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'calendar.dart';
+import 'main.dart';
 
 class Home extends StatelessWidget{
   displayToast(){
     Fluttertoast.showToast(msg: 'Selected');
   }
+
+  toCalendar(){
+    Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Calendar()));
+  }
+
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -61,7 +68,7 @@ class Home extends StatelessWidget{
                           style: TextStyle(color: Colors.white, fontSize: 20))),
                         ])],),),])),
               SizedBox(height: 30),
-              MenuOption('Dinner + Show', 'A timeless classic', displayToast, 'images/wineHearts.png'),
+              MenuOption('Dinner + Show', 'A timeless classic', toCalendar, 'images/wineHearts.png'),
               SizedBox(height: 30),
               MenuOption('Movie Date', 'Keep it simple', displayToast, 'images/film.png'),
               SizedBox(height: 30),

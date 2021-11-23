@@ -1,47 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'home.dart';
+import 'calendar.dart';
 
-
-/*
-JAVA
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-TASTE OF DeEZ NUTS
-
-
-
- */
+late BuildContext globalContext;
 
 void main() {
   runApp(MyApp());
@@ -100,7 +62,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.fromLTRB(125, 12, 125, 12),
                   textStyle: TextStyle(fontFamily: 'Typo', fontSize: 25)
                 ),
-                onPressed: ()=>{Navigator.push(context, MaterialPageRoute(builder: (context) => Home()))}, child: Text('Login',
+                onPressed: () {
+                  globalContext = context;
+                  Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Home()));
+                },
+                child: Text('Login',
               style: TextStyle(color: Colors.red),
             )
             ),
