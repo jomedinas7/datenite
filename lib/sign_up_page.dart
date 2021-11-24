@@ -2,23 +2,23 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'widgets.dart';
 
-class EditProfile extends StatelessWidget {
+class SignUp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       //debugShowCheckedModeBanner: false,
       //title: "Setting UI",
-      body: EditProfilePage(),
+      body: SignUpPage(),
     );
   }
 }
 
-class EditProfilePage extends StatefulWidget {
+class SignUpPage extends StatefulWidget {
   @override
-  _EditProfilePageState createState() => _EditProfilePageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _EditProfilePageState extends State<EditProfilePage> {
+class _SignUpPageState extends State<SignUpPage> {
   bool showPassword = false;
   @override
   Widget build(BuildContext context) {
@@ -103,6 +103,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
               ),
               buildTextField("First Name", "Simu", false),
               buildTextField("Last Name", "Liu", false),
+              buildTextField("Username", "ShangChickfilA", false),
               buildTextField("Password", "********", true),
               SizedBox(
                 height: 35,
