@@ -89,19 +89,12 @@ class _CalendarState extends State<Calendar> {
                                       selectedDateTime: currentDate,
                                       todayBorderColor: Colors.black,
                                       todayButtonColor: Color(Colors.red[300]!.value),
-                                      // markedDateCustomShapeBorder: CircleBorder(side: BorderSide(color: Colors.orangeAccent)),
-                                      // markedDateCustomTextStyle: TextStyle(
-                                      //   fontSize: 18,
-                                      //   color: Colors.blue,
-                                      // ),
-
                                       weekdayTextStyle:  TextStyle(
                                         color: Colors.black,
                                       ),
                                       weekendTextStyle: TextStyle(
                                         color: Color(Colors.red[300]!.value),
                                       ),
-
                                       headerTextStyle: TextStyle(
                                         fontSize: 20,
                                         color: Color(Colors.red[300]!.value),
@@ -109,8 +102,6 @@ class _CalendarState extends State<Calendar> {
                                       iconColor: Colors.black,
                                       headerMargin: EdgeInsets.fromLTRB(0, 10, 0, 0),
                                       weekDayFormat: WeekdayFormat.narrow,
-                                      // markedDateMoreCustomDecoration: ,
-
                                       onDayPressed: (DateTime date, List<Event> events) {
                                         this.setState(() => currentDate = date);
                                         events.forEach((event) => print(event.title));
@@ -118,10 +109,7 @@ class _CalendarState extends State<Calendar> {
                                     )
                                 ))
                           ]),
-
                       ),
-
-                      // calendarWidget(),
                     ]
                   )
               ),
@@ -129,28 +117,6 @@ class _CalendarState extends State<Calendar> {
                   onPressed: ()=> Navigator.pop(context))),
             ],
         ),
-        //                             Column(
-        //                                 mainAxisAlignment: MainAxisAlignment.center,
-        //                                 crossAxisAlignment: CrossAxisAlignment.start,
-        //                                 children: [
-        //                                   Container(height: 30, width: 250,child: Text('Hello Persephone!',
-        //                                       style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 28))),
-        //                                   SizedBox(height: 10),
-        //                                   Container(width: 200, height: 50,child: Text('What are you in the mood for?',
-        //                                       style: TextStyle(color: Colors.white, fontSize: 20))),
-        //                                 ])],),),])),
-        //               SizedBox(height: 30),
-        //               MenuOption('Dinner + Show', 'A timeless classic', displayToast, 'images/wineHearts.png'),
-        //               SizedBox(height: 30),
-        //               MenuOption('Movie Date', 'Keep it simple', displayToast, 'images/film.png'),
-        //               SizedBox(height: 30),
-        //               MenuOption('Something New', 'Be original', displayToast, 'images/art.png'),
-        //               SizedBox(height: 30),
-        //               MenuOption('Ask Your Date', 'Send them a link', displayToast, 'images/defaultUser.png'),
-        //               SizedBox(height: 50)
-        //             ],)),Positioned(left: 5, top: 35, child: IconButton(icon: Icon(Icons.menu, color: Colors.white, size: 35),
-        //           onPressed: ()=> scaffoldKey.currentState!.openDrawer())),
-        //     ])
     );
   }
 }

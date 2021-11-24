@@ -39,6 +39,36 @@ Widget calendarTopContainer(){
   );
 }
 
+Widget createProfileTopBar(){
+  return Container(
+      padding: EdgeInsets.fromLTRB(20,90,10,40),
+      decoration: BoxDecoration(
+          color: Colors.red[800],
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      height: 225,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(width: 10),
+                  Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(height: 40, width: 250,child: Text('Create Profile',
+                            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 28))),
+                        SizedBox(height: 5),
+                      ]),
+                ]
+            ),
+            )
+          ]
+      )
+  );
+}
+
 
 Widget calendarWidget(){
   EventList<Event> markedDateMap = EventList<Event>(

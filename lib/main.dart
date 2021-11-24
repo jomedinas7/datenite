@@ -1,4 +1,6 @@
+import 'package:datenite/profile_page.dart';
 import 'package:flutter/material.dart';
+import 'profile_page.dart';
 
 import 'home.dart';
 import 'calendar.dart';
@@ -72,6 +74,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             SizedBox(height: 20),
             GestureDetector(
+              onTap: () {
+                globalContext = context;
+                Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => EditProfile()));
+              },
               child: Text(
                 'Sign Up',
                 style: TextStyle(color: Colors.white, fontFamily: 'Typo',fontSize: 20),

@@ -13,7 +13,6 @@ class Home extends StatelessWidget{
     Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Calendar()));
   }
 
-
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
