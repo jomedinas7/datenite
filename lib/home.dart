@@ -4,14 +4,15 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'calendar.dart';
 import 'main.dart';
 
+toCalendar(title){
+  Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => Calendar(title)));
+}
+
 class Home extends StatelessWidget{
   displayToast(){
     Fluttertoast.showToast(msg: 'Selected');
   }
 
-  toCalendar(){
-    Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Calendar()));
-  }
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -69,11 +70,11 @@ class Home extends StatelessWidget{
               SizedBox(height: 30),
               MenuOption('Dinner + Show', 'A timeless classic', toCalendar, 'images/wineHearts.png'),
               SizedBox(height: 30),
-              MenuOption('Movie Date', 'Keep it simple', displayToast, 'images/film.png'),
+              MenuOption('Movie Date', 'Keep it simple', toCalendar, 'images/film.png'),
               SizedBox(height: 30),
-              MenuOption('Something New', 'Be original', displayToast, 'images/art.png'),
+              MenuOption('Something New', 'Be original', toCalendar, 'images/art.png'),
               SizedBox(height: 30),
-              MenuOption('Ask Your Date', 'Send them a link', displayToast, 'images/defaultUser.png'),
+              MenuOption('Ask Your Date', 'Send them a link', toCalendar, 'images/defaultUser.png'),
               SizedBox(height: 50)
             ],)),Positioned(left: 5, top: 35, child: IconButton(icon: Icon(Icons.menu, color: Colors.white, size: 35),
               onPressed: ()=> scaffoldKey.currentState!.openDrawer())),
@@ -120,7 +121,13 @@ class MenuOption extends StatelessWidget{
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
           )
-      ), onPressed: () => f(),
+      ), onPressed: () {
+        print('Ey ' + f.toString());
+      if (f.toString() == 'Closure: (dynamic) => dynamic from Function \'toCalendar\': static.'){
+        f(this.text);
+      }
+      else{f();}
+      },
     );
   }
 }

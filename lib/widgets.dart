@@ -7,7 +7,7 @@ import 'package:intl/intl.dart';
 import 'calendar.dart';
 
 
-Widget calendarTopContainer(){
+Widget calendarTopContainer(title){
   return Container(
       padding: EdgeInsets.fromLTRB(20,90,10,40),
       decoration: BoxDecoration(
@@ -25,7 +25,7 @@ Widget calendarTopContainer(){
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Container(height: 40, width: 250,child: Text('Dinner + Show',
+                        Container(height: 40, width: 250,child: Text(title,
                             style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 28))),
                         SizedBox(height: 5),
                         Container(padding: EdgeInsets.fromLTRB(12, 0, 0, 0), width: 200, height: 50,child: Text('When\'s the Date?',

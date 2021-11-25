@@ -11,9 +11,10 @@ import 'package:intl/intl.dart';
 DateTime currentDate = DateTime.now();
 
 class Calendar extends StatefulWidget {
-  // Calendar({Key key, this.title}) : super(key: key);
 
-  //final String title;
+  final String title;
+  const Calendar(this.title);
+
 
   @override
   _CalendarState createState() =>  _CalendarState();
@@ -31,7 +32,7 @@ class _CalendarState extends State<Calendar> {
 
     EventList<Event> markedDateMap = EventList<Event>(
       events: {
-        DateTime(20201, 11, 2): [
+        DateTime(2021, 11, 2): [
           Event(
             date: DateTime(2021, 11, 2),
             title: 'Event 1',
@@ -72,7 +73,7 @@ class _CalendarState extends State<Calendar> {
               SingleChildScrollView(
                   child: Column(
                     children: [
-                      calendarTopContainer(),
+                      calendarTopContainer(widget.title),
                       SizedBox(height: 30),
                       //SizedBox(height: 500, child:  calendarWidget(),),
 
@@ -117,50 +118,6 @@ class _CalendarState extends State<Calendar> {
                   onPressed: ()=> Navigator.pop(context))),
             ],
         ),
-    );
-  }
-}
-
-
-class MenuOption extends StatelessWidget{
-
-  final String text;
-  final String subtext;
-  final Function function;
-  final String image;
-
-  const MenuOption( this.text, this.subtext, this.function, this.image);
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildOption(this.text, this.subtext, this.function, this.image);
-  }
-
-  Widget _buildOption(text, subtext, Function f, String img){
-    return ElevatedButton(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width: 5),
-            Image(image: AssetImage(img), height: 90, width: 90),
-            Flexible(
-                fit: FlexFit.tight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(text, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
-                    Text(subtext, style: TextStyle(color: Colors.white,fontSize: 15))
-                  ],))
-          ]
-      ),
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.red[800] as Color),
-          fixedSize: MaterialStateProperty.all<Size>(Size(350, 120)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
-          )
-      ), onPressed: () => f(),
     );
   }
 }
