@@ -53,6 +53,7 @@ flutter:
     - images/film.png
     - images/art.png
     - images/defaultUser.png
+    - images/Simu.jpg
   uses-material-design: true
   fonts:
     - family: Typo

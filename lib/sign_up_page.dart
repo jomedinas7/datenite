@@ -61,17 +61,15 @@ class _SignUpPageState extends State<SignUpPage> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                               fit: BoxFit.cover,
-                              image: NetworkImage(
-                                "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Simu_Liu_by_Gage_Skidmore.jpg/1200px-Simu_Liu_by_Gage_Skidmore.jpg",
-                              ),
+                              image: AssetImage('images/Simu.jpg'),
                             alignment: FractionalOffset.fromOffsetAndSize(
                               const Offset(
                                 1.0,
                                 -10,
                               ),
                               const Size(
-                                100,
-                                100,
+                                5000,
+                                5000,
                               ),
                             ),
                           )),
