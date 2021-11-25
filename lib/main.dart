@@ -1,16 +1,23 @@
 import 'package:datenite/sign_up_page.dart';
+import 'dart:math';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:sqflite/sqflite.dart';
 import 'sign_up_page.dart';
 import 'home.dart';
 import 'calendar.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 late BuildContext globalContext;
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -18,7 +25,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: MyHomePage(title: 'DateNite'),
+      home: FutureBuilder(
+        future: _fbApp,
+        builder: (context,snapshot) {
+          if (snapshot.hasError){
+            print("OH NO OUR TABLE" + '\n' + snapshot.error.toString());
+            return Text('Sumtingwong');
+          } else if (snapshot.hasData) {
+            return  MyHomePage(title: 'DateNite');
+          } else {
+            return Center(child: CircularProgressIndicator());
+          }
+        }
+      )
     );
   }
 }
@@ -37,6 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
   final passwordController = TextEditingController();
 
   verifyUser(){
+    DatabaseReference flutterTest = FirebaseDatabase.instance.reference().child('test');
+    flutterTest.set("This is a flutter test from the database ${Random().nextInt(100)}");
     print(usernameController.text);
     globalContext = context;
     Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Home()));

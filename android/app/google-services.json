@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "699610713668",
+    "project_id": "datenitejw",
+    "storage_bucket": "datenitejw.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:699610713668:android:0d33193f5db064596df611",
+        "android_client_info": {
+          "package_name": "com.example.datenite"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "699610713668-loealur44usq8mn0egfvbi10l2ch69ln.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpRev6Lc23RF1LIw3tbt-CPglxu4BRk4I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "699610713668-loealur44usq8mn0egfvbi10l2ch69ln.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
