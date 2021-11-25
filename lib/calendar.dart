@@ -73,10 +73,8 @@ class _CalendarState extends State<Calendar> {
               SingleChildScrollView(
                   child: Column(
                     children: [
-                      calendarTopContainer(widget.title),
+                      calendarTopContainer(widget.title,context),
                       SizedBox(height: 30),
-                      //SizedBox(height: 500, child:  calendarWidget(),),
-
                       SizedBox(height: 500, child:
                       Column(
                           children: [
@@ -84,24 +82,28 @@ class _CalendarState extends State<Calendar> {
                                 child: Container(
                                     margin: EdgeInsets.symmetric(horizontal: 10),
                                     child: CalendarCarousel<Event>(
-                                      thisMonthDayBorderColor: Colors.grey,
+                                      thisMonthDayBorderColor: Colors.transparent,
                                       daysHaveCircularBorder: true,
                                       markedDatesMap: markedDateMap,
                                       selectedDateTime: currentDate,
-                                      todayBorderColor: Colors.black,
-                                      todayButtonColor: Color(Colors.red[300]!.value),
+                                      todayBorderColor: Colors.grey,
+                                      todayButtonColor: Colors.transparent,
+                                      todayTextStyle: TextStyle(color:Colors.black),
+                                      minSelectedDate: DateTime.now().subtract(Duration(days:1)),
+                                      selectedDayButtonColor: Color(Colors.red[400]!.value),
+                                      selectedDayBorderColor: Colors.transparent,
                                       weekdayTextStyle:  TextStyle(
                                         color: Colors.black,
                                       ),
                                       weekendTextStyle: TextStyle(
-                                        color: Color(Colors.red[300]!.value),
+                                        color: Color(Colors.red[400]!.value),
                                       ),
                                       headerTextStyle: TextStyle(
-                                        fontSize: 20,
-                                        color: Color(Colors.red[300]!.value),
+                                        fontSize: 22,
+                                        color: Color(Colors.red[400]!.value)
                                       ),
                                       iconColor: Colors.black,
-                                      headerMargin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                      headerMargin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                                       weekDayFormat: WeekdayFormat.narrow,
                                       onDayPressed: (DateTime date, List<Event> events) {
                                         this.setState(() => currentDate = date);
@@ -114,7 +116,7 @@ class _CalendarState extends State<Calendar> {
                     ]
                   )
               ),
-              Positioned(left: 5, top: 35, child: IconButton(icon: Icon(Icons.arrow_back, color: Colors.white, size: 35),
+              Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
                   onPressed: ()=> Navigator.pop(context))),
             ],
         ),

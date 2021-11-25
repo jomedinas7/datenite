@@ -3,13 +3,12 @@ import "package:flutter_calendar_carousel/" "flutter_calendar_carousel.dart";
 import "package:flutter_calendar_carousel/classes/event.dart";
 import "package:flutter_calendar_carousel/classes/event_list.dart";
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
-import 'package:intl/intl.dart';
 import 'calendar.dart';
 
 
-Widget calendarTopContainer(title){
+Widget calendarTopContainer(title,context){
   return Container(
-      padding: EdgeInsets.fromLTRB(20,90,10,40),
+      padding: EdgeInsets.fromLTRB(0,70,0,0),
       decoration: BoxDecoration(
           color: Colors.red[800],
           borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -17,22 +16,17 @@ Widget calendarTopContainer(title){
       child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Container(child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(width: 10),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+            Container(
+              width: MediaQuery.of(context).size.width,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(height: 40, width: 250,child: Text(title,
-                            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 28))),
-                        SizedBox(height: 5),
-                        Container(padding: EdgeInsets.fromLTRB(12, 0, 0, 0), width: 200, height: 50,child: Text('When\'s the Date?',
-                            style: TextStyle(color: Colors.white, fontSize: 20))),
+                        Container(child: Text(title,
+                            style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 32))),
+                        SizedBox(height: 8),
+                        Container(child: Text('When\'s the date?',
+                            style: TextStyle(color: Colors.white, fontSize: 22))),
                       ]),
-                ]
-            ),
             )
           ]
       )
