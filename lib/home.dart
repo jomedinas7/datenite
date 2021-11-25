@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'calendar.dart';
+import 'sign_up_page.dart';
 import 'main.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatelessWidget{
   displayToast(){
@@ -13,10 +15,16 @@ class Home extends StatelessWidget{
     Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Calendar()));
   }
 
+  signOut(){
+    globalContext.read<AuthModel>().signOut();
+    Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => MyApp()));
+  }
+
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
+    globalContext = context;
     return Scaffold(
       key: scaffoldKey,
       drawer: Drawer(
@@ -69,7 +77,7 @@ class Home extends StatelessWidget{
               SizedBox(height: 30),
               MenuOption('Dinner + Show', 'A timeless classic', toCalendar, 'images/wineHearts.png'),
               SizedBox(height: 30),
-              MenuOption('Movie Date', 'Keep it simple', displayToast, 'images/film.png'),
+              MenuOption('Movie Date', 'Keep it simple', signOut, 'images/film.png'),
               SizedBox(height: 30),
               MenuOption('Something New', 'Be original', displayToast, 'images/art.png'),
               SizedBox(height: 30),

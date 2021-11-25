@@ -8,36 +8,68 @@ import 'home.dart';
 import 'calendar.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'package:firebase_auth/firebase_auth.dart';
+import 'authentication_service.dart';
+import 'package:provider/provider.dart';
+
 late BuildContext globalContext;
+
+class AuthModel extends ChangeNotifier {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool get isSignedIn => _auth.currentUser != null;
+
+  Future<void> signIn({required String email, required String password}) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      print("Signed in");
+      notifyListeners();
+      Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Home()));
+    } on FirebaseAuthException catch (e) {
+      print(e.message.toString());
+    }
+  }
+
+  Future<void> signOut() async {
+    await _auth.signOut();
+    notifyListeners();
+  }
+}
+
+
+// https://stackoverflow.com/questions/62540012/custom-username-and-password-login-using-flutter-firebase
+
+//https://pub.dev/packages/authentication_provider
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-  runApp(MyApp());
+  await Firebase.initializeApp();
+  // runApp(MyApp());
+
+  runApp(
+      ChangeNotifierProvider<AuthModel>(
+        create: (_) => AuthModel(),
+        child: MaterialApp(
+          home: Consumer<AuthModel>(
+            builder: (_, auth, __) => auth.isSignedIn ? Home() : MyApp(),
+          ),
+        ),
+      ),
+  );git a
 }
 
+
 class MyApp extends StatelessWidget {
-  final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
+  // final Future<FirebaseApp> _fbApp = Firebase.initializeApp();
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'DateNite',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: FutureBuilder(
-        future: _fbApp,
-        builder: (context,snapshot) {
-          if (snapshot.hasError){
-            print("OH NO OUR TABLE" + '\n' + snapshot.error.toString());
-            return Text('Sumtingwong');
-          } else if (snapshot.hasData) {
-            return  MyHomePage(title: 'DateNite');
-          } else {
-            return Center(child: CircularProgressIndicator());
-          }
-        }
-      )
+    globalContext = context;
+    return
+      MaterialApp(
+        title: 'DateNite',
+        theme: ThemeData(
+          primarySwatch: Colors.red,
+        ),
+        home: MyHomePage(title: 'DateNite')
     );
   }
 }
@@ -55,16 +87,17 @@ class _MyHomePageState extends State<MyHomePage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  verifyUser(){
-    DatabaseReference flutterTest = FirebaseDatabase.instance.reference().child('test');
-    flutterTest.set("This is a flutter test from the database ${Random().nextInt(100)}");
-    print(usernameController.text);
-    globalContext = context;
-    Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Home()));
-  }
+  // verifyUser(){
+  //   DatabaseReference flutterTest = FirebaseDatabase.instance.reference().child('test');
+  //   flutterTest.set("This is a flutter test from the database ${Random().nextInt(100)}");
+  //   print(usernameController.text);
+  //   // globalContext = context;
+  //   Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Home()));
+  // }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.red[800],
       body: Center(
@@ -137,9 +170,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: EdgeInsets.fromLTRB(125, 12, 125, 12),
                   textStyle: TextStyle(fontFamily: 'Typo', fontSize: 25)
                 ),
-                onPressed: () {
-                  verifyUser();
-                },
+                onPressed: () async {
+                  // verifyUser();
+
+                  globalContext = context;
+                  print(globalContext.read<AuthModel>().signIn(email: usernameController.text.toString(), password: passwordController.text.toString()));
+                  //notifyListeners();
+                  },
                 child: Text('Login',
               style: TextStyle(color: Colors.red),
             )

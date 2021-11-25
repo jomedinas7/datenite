@@ -25,7 +25,10 @@ dependencies:
   firebase_database:  ^8.1.0
   firebase_messaging: ^11.1.0
   firebase_analytics: ^9.0.0-dev.3
+  firebase_auth: ^3.2.0
   cloud_functions: ^3.1.1
+  authentication_provider: ^1.0.1
+  provider: ^5.0.0-nullsafety.3
   fluttertoast: 8.0.8
   sqflite: ^2.0.0-nullsafety.2
   intl: ^0.17.0-nullsafety.2
