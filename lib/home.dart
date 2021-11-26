@@ -122,7 +122,6 @@ class MenuOption extends StatelessWidget{
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
           )
       ), onPressed: () {
-        print('Ey ' + f.toString());
       if (f.toString() == 'Closure: (dynamic) => dynamic from Function \'toCalendar\': static.'){
         f(this.text);
       }

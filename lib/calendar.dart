@@ -1,3 +1,4 @@
+import 'package:datenite/restaurants.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -6,7 +7,6 @@ import "package:flutter_calendar_carousel/" "flutter_calendar_carousel.dart";
 import "package:flutter_calendar_carousel/classes/event.dart";
 import "package:flutter_calendar_carousel/classes/event_list.dart";
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
-import 'package:intl/intl.dart';
 
 DateTime currentDate = DateTime.now();
 
@@ -14,7 +14,6 @@ class Calendar extends StatefulWidget {
 
   final String title;
   const Calendar(this.title);
-
 
   @override
   _CalendarState createState() =>  _CalendarState();
@@ -32,9 +31,9 @@ class _CalendarState extends State<Calendar> {
 
     EventList<Event> markedDateMap = EventList<Event>(
       events: {
-        DateTime(2021, 11, 2): [
+        DateTime(2021, 11, 27): [
           Event(
-            date: DateTime(2021, 11, 2),
+            date: DateTime(2021, 11, 27),
             title: 'Event 1',
             icon: const Icon(Icons.circle),
             dot: Container(
@@ -62,20 +61,17 @@ class _CalendarState extends State<Calendar> {
                 title: const Text('Item 1'),
                 onTap: (){
                 },
-              )
-            ],
+              )],
           ),
         ),
-
-        // body: Container(),
         body: Stack(
             children: [
               SingleChildScrollView(
                   child: Column(
                     children: [
                       calendarTopContainer(widget.title,context),
-                      SizedBox(height: 30),
-                      SizedBox(height: 500, child:
+                      SizedBox(height: 10),
+                      SizedBox(height: 450, child:
                       Column(
                           children: [
                             Expanded(
@@ -114,6 +110,20 @@ class _CalendarState extends State<Calendar> {
                                 ))
                           ]),
                       ),
+                      Container(
+                          height:40,
+                          width: 200,
+                          child: ElevatedButton(onPressed: (){
+                            var client = RestaurantsClient();
+                            client.getConnection();
+                            }, child: Text('Let\'s plan!',style:
+                          TextStyle(fontSize: 18),
+                          ),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
+                      )
+                      // Divider(color: Colors.grey,thickness: 2,indent: 10,endIndent: 10),
+                      // Container(height: 200, width: MediaQuery.of(context).size.width,
+                      //     child: ListView())
                     ]
                   )
               ),
