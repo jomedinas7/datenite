@@ -1,10 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'cinema.dart';
+import 'film.dart';
 
 
 class MoviesClient{
-
+  var cinemaId;
   /* These are the testing credentials, they don't show nearby data yet
   When we know everything works we can swap them for the real credentials
   The real credentials only have ~70 requests left, testing have 10,000 */
@@ -20,6 +21,35 @@ class MoviesClient{
   };
 
 
+  Future<List<Film>> getFilms(id) async {
+    var url = "https://api-gate2.movieglu.com/cinemaShowTimes/?cinema_id=$id&date=2021-11-28";
+    var response = await http.get(Uri.parse(url), headers: headers);
+    var parsedBody = jsonDecode(response.body);
+    return createFilms(parsedBody['films']);
+  }
+
+  List<Film> createFilms(body){
+
+    List<Film> films = [];
+
+    body.forEach((film) {
+
+      print(film['film_name']);
+
+      films.add(Film(film['film_id'], film['imdb_id'],film['imdb_title_id'],
+          film['film_name'],film['version_type'],
+          film['age_rating'], []));
+
+      print('Added film'+ films.last.id);
+
+      // films.last.showtimes = film['showings']['times'].forEach((showtime) {
+      //    ShowTimes(showtime['start_time'],showtime['end_time']);
+      // });
+    });
+
+    print('Done'+ films[0].name);
+    return films;
+  }
   Future <List<Cinema>> getCinemas() async {
     var url = "https://api-gate2.movieglu.com/cinemasNearby/?n=10";
     var response = await http.get(Uri.parse(url), headers: headers);
@@ -36,6 +66,7 @@ class MoviesClient{
 
   List<Cinema> createCinemas(body){
     List<Cinema> cinemas = [];
+
     body.forEach((cinema) =>
         //print(cinema)
         cinemas.add(Cinema(cinema['cinema_id'],cinema['cinema_name'],cinema['address'],cinema['address2'],

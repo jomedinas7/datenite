@@ -7,11 +7,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'cinema.dart';
 
+var client = MoviesClient();
 
 
 class CinemasPage extends StatelessWidget{
   
-  var client = MoviesClient();
 
   printID(Cinema cine){
     print(cine.id);
@@ -90,7 +90,8 @@ class CinemaButton extends StatelessWidget{
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
         )),
         onPressed: () {
-          Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => MoviesList()));
+          client.cinemaId = cinema.id;
+          Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => MoviesList(client)));
         },);
   }
 
