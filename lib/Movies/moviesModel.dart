@@ -1,4 +1,8 @@
+import 'package:datenite/Movies/MoviesList.dart';
 import 'package:datenite/Movies/moviesClient.dart';
+import 'package:datenite/home.dart';
+import 'package:datenite/main.dart';
+import 'package:datenite/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'cinema.dart';
@@ -7,7 +11,11 @@ import 'cinema.dart';
 
 class CinemasPage extends StatelessWidget{
   
-  var client = MoviesClient();  
+  var client = MoviesClient();
+
+  printID(Cinema cine){
+    print(cine.id);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,50 +24,74 @@ class CinemasPage extends StatelessWidget{
         builder: (context, AsyncSnapshot<List<Cinema>> snapshot) {
           if (snapshot.hasData) {
            return Scaffold(
-               body: ListView(
-                children:
-                  snapshot.data!.map((cinema) =>
-                  Container(
-                    height: 200,
-                    width: 200,
-                    child: Text(cinema.name),
-                  )).toList()
-            ,
-           ));
+               body: Stack(
+                   children: [
+                     SingleChildScrollView(
+                       child: Column(
+                           children: [
+                             calendarTopContainer('Theaters Near You', context),
+                             SizedBox(height: 20),
+                             Column(
+                              children:
+                                snapshot.data!.map((cinema) =>
+                                  Column(children: [
+                                  CinemaButton(cinema),
+                                  SizedBox(height: 20)
+                                ])).toList()
+           )]))]));
           } 
           else {
-            return CircularProgressIndicator();
+            return Scaffold(body:
+              Padding(
+                  padding: const EdgeInsets.all(180),
+                  child:Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [CircularProgressIndicator()]
+                  )));
           }
         }
     );
   }
 }
 
-//
-// class CinemasPage extends StatefulWidget{
-//   @override
-//   State<StatefulWidget> createState() => _CinemasPageState();
-//
-// }
-//
-// class _CinemasPageState extends State<CinemasPage>{
-//
-//   MoviesClient client = MoviesClient();
-//
-//   @override
-//   Future<Widget> build(BuildContext context) async {
-//     var cines = client.getCinemas();
-//     return Scaffold(
-//       body: ListView(
-//         children: [
-//           await Stream.fromIterable((responseNewsList as List)
-//               .skip(skipItems)
-//               .take(20))
-//               .asyncMap((id) =>  this.fetchNewsDetails(id))
-//               .toList()
-//         ],
-//       ),
-//     )
-//   }
-//
-// }
+class CinemaButton extends StatelessWidget{
+
+  final Cinema cine;
+
+  const CinemaButton(this.cine);
+
+  @override
+  Widget build(BuildContext context) {
+    return _buildButton(this.cine);
+  }
+  Widget _buildButton(cinema) {
+    return ElevatedButton(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(width: 5),
+            Image(image: AssetImage('images/film.png'), height: 90, width: 90),
+            Flexible(
+              fit: FlexFit.tight,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(cinema.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
+                  Text(cinema.address, style: TextStyle(color: Colors.white,fontSize: 15))
+                ],))
+              ]
+            ),
+        style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(Colors.red[800] as Color),
+            fixedSize: MaterialStateProperty.all<Size>(Size(350, 120)),
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
+        )),
+        onPressed: () {
+          Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => MoviesList()));
+        },);
+  }
+
+}

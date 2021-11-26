@@ -21,7 +21,7 @@ class MoviesClient{
 
 
   Future <List<Cinema>> getCinemas() async {
-    var url = "https://api-gate2.movieglu.com/cinemasNearby/?n=2";
+    var url = "https://api-gate2.movieglu.com/cinemasNearby/?n=10";
     var response = await http.get(Uri.parse(url), headers: headers);
 
     //print('Response code: ${response.statusCode}');
