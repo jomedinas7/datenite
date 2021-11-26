@@ -1,4 +1,4 @@
-import 'package:datenite/restaurants.dart';
+import 'package:datenite/Movies/moviesClient.dart';
 import 'package:datenite/sign_up_page.dart';
 import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
@@ -14,8 +14,6 @@ late BuildContext globalContext;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp();
-  var client = RestaurantsClient();
-  client.getConnection();
   runApp(MyApp());
 }
 

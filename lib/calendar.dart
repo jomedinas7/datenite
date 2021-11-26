@@ -1,7 +1,8 @@
-import 'package:datenite/restaurants.dart';
+import 'package:datenite/Movies/moviesClient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'Movies/moviesModel.dart';
 import 'widgets.dart';
 import "package:flutter_calendar_carousel/" "flutter_calendar_carousel.dart";
 import "package:flutter_calendar_carousel/classes/event.dart";
@@ -114,8 +115,8 @@ class _CalendarState extends State<Calendar> {
                           height:40,
                           width: 200,
                           child: ElevatedButton(onPressed: (){
-                            var client = RestaurantsClient();
-                            client.getConnection();
+                            var cines = MoviesClient().getCinemas();
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
                             }, child: Text('Let\'s plan!',style:
                           TextStyle(fontSize: 18),
                           ),
