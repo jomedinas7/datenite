@@ -33,21 +33,20 @@ class MoviesClient{
     List<Film> films = [];
 
     body.forEach((film) {
-
       print(film['film_name']);
+
+      List showTimes = [];
+      film['showings']['Standard']['times'].forEach((showtime){
+        showTimes.add(showtime['start_time']);
+      });
 
       films.add(Film(film['film_id'], film['imdb_id'],film['imdb_title_id'],
           film['film_name'],film['version_type'],
-          film['age_rating'], []));
+          film['age_rating'], showTimes));
 
-      print('Added film'+ films.last.id);
-
-      // films.last.showtimes = film['showings']['times'].forEach((showtime) {
-      //    ShowTimes(showtime['start_time'],showtime['end_time']);
-      // });
     });
 
-    print('Done'+ films[0].name);
+    print('Done');
     return films;
   }
   Future <List<Cinema>> getCinemas() async {

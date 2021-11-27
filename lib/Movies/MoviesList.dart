@@ -76,7 +76,7 @@ class FilmButton extends StatelessWidget{
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(film.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
-                    Text(film.showtimes[0].start, style: TextStyle(color: Colors.white,fontSize: 15))
+                    Text(film.showtimes[0], style: TextStyle(color: Colors.white,fontSize: 15))
                   ],))
           ]
       ),
