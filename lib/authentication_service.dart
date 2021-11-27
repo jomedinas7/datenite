@@ -11,6 +11,8 @@ class AuthModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool get isSignedIn => _auth.currentUser != null;
   User? get currentUser => _auth.currentUser;
+  String currentUserFirstName = "Persephone";
+  String? get currentUid => _auth.currentUser!.uid;
   List get currentUserInfo => [_auth.currentUser!.uid, _auth.currentUser!.displayName];
   // var get currentUserName => _auth.currentUser!.firstName;
 
@@ -20,10 +22,15 @@ class AuthModel extends ChangeNotifier {
     return list;
   }
 
-  Future<List> getFirstNameFromCollection(/*uid*/) async {
+  Future<void> setFirstNameFromCollection() async {
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
-    var list = querySnapshot.docs;
-    return list;
+    var collections = querySnapshot.docs;
+    for (int i = 0; i<collections.length; i++){
+      if(collections[i].get('uid') == currentUid){
+        currentUserFirstName = collections[i].get('firstName');
+        break;
+      }
+    }
   }
 
 

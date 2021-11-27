@@ -1,3 +1,4 @@
+import 'package:datenite/Movies/moviesClient.dart';
 import 'package:datenite/sign_up_page.dart';
 import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
@@ -49,21 +50,21 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.red,
         ),
-        home: MyHomePage(title: 'DateNite')
+        home: MyAppPage(title: 'DateNite')
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+class MyAppPage extends StatefulWidget {
+  MyAppPage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyAppPageState createState() => _MyAppPageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyAppPageState extends State<MyAppPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 

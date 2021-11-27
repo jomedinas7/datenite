@@ -1,19 +1,20 @@
+import 'package:datenite/Movies/moviesClient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'Movies/moviesModel.dart';
 import 'widgets.dart';
 import "package:flutter_calendar_carousel/" "flutter_calendar_carousel.dart";
 import "package:flutter_calendar_carousel/classes/event.dart";
 import "package:flutter_calendar_carousel/classes/event_list.dart";
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
-import 'package:intl/intl.dart';
 
 DateTime currentDate = DateTime.now();
 
 class Calendar extends StatefulWidget {
-  // Calendar({Key key, this.title}) : super(key: key);
 
-  //final String title;
+  final String title;
+  const Calendar(this.title);
 
   @override
   _CalendarState createState() =>  _CalendarState();
@@ -31,9 +32,9 @@ class _CalendarState extends State<Calendar> {
 
     EventList<Event> markedDateMap = EventList<Event>(
       events: {
-        DateTime(20201, 11, 2): [
+        DateTime(2021, 11, 27): [
           Event(
-            date: DateTime(2021, 11, 2),
+            date: DateTime(2021, 11, 27),
             title: 'Event 1',
             icon: const Icon(Icons.circle),
             dot: Container(
@@ -61,46 +62,46 @@ class _CalendarState extends State<Calendar> {
                 title: const Text('Item 1'),
                 onTap: (){
                 },
-              )
-            ],
+              )],
           ),
         ),
-
-        // body: Container(),
         body: Stack(
             children: [
               SingleChildScrollView(
                   child: Column(
                     children: [
-                      calendarTopContainer(),
-                      SizedBox(height: 30),
-                      //SizedBox(height: 500, child:  calendarWidget(),),
-
-                      SizedBox(height: 500, child:
+                      calendarTopContainer(widget.title,context),
+                      SizedBox(height: 10),
+                      SizedBox(height: 450, child:
                       Column(
                           children: [
                             Expanded(
                                 child: Container(
                                     margin: EdgeInsets.symmetric(horizontal: 10),
                                     child: CalendarCarousel<Event>(
-                                      thisMonthDayBorderColor: Colors.grey,
+                                      thisMonthDayBorderColor: Colors.transparent,
                                       daysHaveCircularBorder: true,
                                       markedDatesMap: markedDateMap,
                                       selectedDateTime: currentDate,
-                                      todayBorderColor: Colors.black,
-                                      todayButtonColor: Color(Colors.red[300]!.value),
+                                      todayBorderColor: Color(Colors.grey[800]!.value),
+                                      todayButtonColor: Colors.transparent,
+                                      todayTextStyle: TextStyle(color:Colors.black),
+                                      minSelectedDate: DateTime.now().subtract(Duration(days:1)),
+                                      selectedDayButtonColor: Color(Colors.red[400]!.value),
+                                      selectedDayBorderColor: Colors.transparent,
+                                      selectedDayTextStyle: TextStyle(color: Colors.white),
                                       weekdayTextStyle:  TextStyle(
                                         color: Colors.black,
                                       ),
                                       weekendTextStyle: TextStyle(
-                                        color: Color(Colors.red[300]!.value),
+                                        color: Color(Colors.red[400]!.value),
                                       ),
                                       headerTextStyle: TextStyle(
-                                        fontSize: 20,
-                                        color: Color(Colors.red[300]!.value),
+                                        fontSize: 22,
+                                        color: Color(Colors.red[400]!.value)
                                       ),
                                       iconColor: Colors.black,
-                                      headerMargin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                                      headerMargin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                                       weekDayFormat: WeekdayFormat.narrow,
                                       onDayPressed: (DateTime date, List<Event> events) {
                                         this.setState(() => currentDate = date);
@@ -110,57 +111,27 @@ class _CalendarState extends State<Calendar> {
                                 ))
                           ]),
                       ),
+                      Container(
+                          height:40,
+                          width: 200,
+                          child: ElevatedButton(onPressed: (){
+                            var cines = MoviesClient().getCinemas();
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
+                            }, child: Text('Let\'s plan!',style:
+                          TextStyle(fontSize: 18),
+                          ),
+                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
+                      )
+                      // Divider(color: Colors.grey,thickness: 2,indent: 10,endIndent: 10),
+                      // Container(height: 200, width: MediaQuery.of(context).size.width,
+                      //     child: ListView())
                     ]
                   )
               ),
-              Positioned(left: 5, top: 35, child: IconButton(icon: Icon(Icons.arrow_back, color: Colors.white, size: 35),
+              Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
                   onPressed: ()=> Navigator.pop(context))),
             ],
         ),
-    );
-  }
-}
-
-
-class MenuOption extends StatelessWidget{
-
-  final String text;
-  final String subtext;
-  final Function function;
-  final String image;
-
-  const MenuOption( this.text, this.subtext, this.function, this.image);
-
-  @override
-  Widget build(BuildContext context) {
-    return _buildOption(this.text, this.subtext, this.function, this.image);
-  }
-
-  Widget _buildOption(text, subtext, Function f, String img){
-    return ElevatedButton(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(width: 5),
-            Image(image: AssetImage(img), height: 90, width: 90),
-            Flexible(
-                fit: FlexFit.tight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(text, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
-                    Text(subtext, style: TextStyle(color: Colors.white,fontSize: 15))
-                  ],))
-          ]
-      ),
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.red[800] as Color),
-          fixedSize: MaterialStateProperty.all<Size>(Size(350, 120)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
-          )
-      ), onPressed: () => f(),
     );
   }
 }
