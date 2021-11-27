@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:email_validator/email_validator.dart';
 import 'widgets.dart';
+import 'main.dart';
+import 'package:provider/provider.dart';
+import 'authentication_service.dart';
 
 class SignUp extends StatelessWidget {
   @override
@@ -19,6 +23,15 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+
+  final formKey = GlobalKey<FormState>();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
+  final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
+  final emailController = TextEditingController();
+
+
   bool showPassword = false;
   @override
   Widget build(BuildContext context) {
@@ -41,6 +54,9 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(
                 height: 15,
               ),
+              Row(children: [
+                SizedBox(width: 65,),
+                Image(image: AssetImage('images/Heart.png'), height: 50, width: 50),
               Center(
                 child: Stack(
                   children: [
@@ -96,13 +112,27 @@ class _SignUpPageState extends State<SignUpPage> {
                   ],
                 ),
               ),
+                Image(image: AssetImage('images/Heart.png'), height: 50, width: 50),
+              ]
+              ),
               SizedBox(
                 height: 35,
               ),
-              buildTextField("First Name", "Simu", false),
-              buildTextField("Last Name", "Liu", false),
-              buildTextField("Username", "ShangChickfilA", false),
-              buildTextField("Password", "********", true),
+              Form(
+                key: formKey,
+                  child: AutofillGroup(child:
+                      Column(children: [
+
+
+              buildTextField("First Name", "Simu", false, firstNameController),
+              buildTextField("Last Name", "Liu", false, lastNameController),
+              buildTextField("Email", "ShangChickfilA@gmail.com", false, emailController),
+              buildTextField("Password", "ShangChickfilA", true, confirmPasswordController),
+
+              ]
+              ),
+            )
+          ),
               SizedBox(
                 height: 35,
               ),
@@ -123,7 +153,26 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Colors.white)),
                   ),
                   RaisedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      final form = formKey.currentState!;
+                      if (form.validate()) {
+                        // TextInput.finishAutofillContext();
+                        final firstName = firstNameController.text;
+
+                        ScaffoldMessenger.of(context)
+                          ..removeCurrentSnackBar()
+                          ..showSnackBar(SnackBar(
+                            content: Text('Welcome $firstName!'),
+                          ));
+                        globalContext.read<AuthModel>().signUp(
+                            email: emailController.text,
+                            password: confirmPasswordController.text,
+                            firstName: firstNameController.text,
+                            lastName: lastNameController.text,
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
                     color: Colors.red,
                     padding: EdgeInsets.symmetric(horizontal: 50),
                     elevation: 2,
@@ -148,12 +197,26 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField) {
+      String labelText, String placeholder, bool isPasswordTextField, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
-      child: TextField(
+      child: TextFormField(
+          validator: (value) {
+            if (value != null && value.length<1) {
+              return 'Enter Something';
+            }
+            if (value != null && isPasswordTextField && value.length<6) {
+              return 'Enter Min 6 characters';
+            }
+            if (value != null && labelText == 'Email' && !EmailValidator.validate(controller.text)) {
+              return 'Enter Valid Email';
+            }
+          },
+        style: TextStyle(color: Colors.white),
+        controller: controller,
         obscureText: isPasswordTextField ? showPassword : false,
         decoration: InputDecoration(
+            errorStyle: TextStyle(color: Colors.white),
             suffixIcon: isPasswordTextField
                 ? IconButton(
               onPressed: () {
@@ -179,187 +242,8 @@ class _SignUpPageState extends State<SignUpPage> {
             hintStyle: TextStyle(
               fontSize: 16,
               // fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: Color(Colors.red[100]!.value),
             )),
-      ),
-    );
-  }
-}
-
-class SettingsPage extends StatefulWidget {
-  @override
-  _SettingsPageState createState() => _SettingsPageState();
-}
-
-class _SettingsPageState extends State<SettingsPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-        elevation: 1,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.green,
-          ),
-        ),
-      ),
-      body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: ListView(
-          children: [
-            Text(
-              "Settings",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            ),
-            SizedBox(
-              height: 40,
-            ),
-            Row(
-              children: [
-                Icon(
-                  Icons.person,
-                  color: Colors.red,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  "Account",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Divider(
-              height: 15,
-              thickness: 2,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            buildAccountOptionRow(context, "Change password"),
-            buildAccountOptionRow(context, "Content settings"),
-            buildAccountOptionRow(context, "Social"),
-            buildAccountOptionRow(context, "Language"),
-            buildAccountOptionRow(context, "Privacy and security"),
-            SizedBox(
-              height: 40,
-            ),
-            Row(
-              children: [
-                Icon(
-                  Icons.volume_up_outlined,
-                  color: Colors.green,
-                ),
-                SizedBox(
-                  width: 8,
-                ),
-                Text(
-                  "Notifications",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-            Divider(
-              height: 15,
-              thickness: 2,
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            buildNotificationOptionRow("New for you", true),
-            buildNotificationOptionRow("Account activity", true),
-            buildNotificationOptionRow("Opportunity", false),
-            SizedBox(
-              height: 50,
-            ),
-            Center(
-              child: OutlineButton(
-                padding: EdgeInsets.symmetric(horizontal: 40),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20)),
-                onPressed: () {},
-                child: Text("SIGN OUT",
-                    style: TextStyle(
-                        fontSize: 16, letterSpacing: 2.2, color: Colors.white)),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Row buildNotificationOptionRow(String title, bool isActive) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
-              color: Colors.grey[600]),
-        ),
-        Transform.scale(
-            scale: 0.7,
-            child: CupertinoSwitch(
-              value: isActive,
-              onChanged: (bool val) {},
-            ))
-      ],
-    );
-  }
-
-  GestureDetector buildAccountOptionRow(BuildContext context, String title) {
-    return GestureDetector(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return AlertDialog(
-                title: Text(title),
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text("Option 1"),
-                    Text("Option 2"),
-                    Text("Option 3"),
-                  ],
-                ),
-                actions: [
-                  FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text("Close")),
-                ],
-              );
-            });
-      },
-      child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-                color: Colors.grey[600],
-              ),
-            ),
-            Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey,
-            ),
-          ],
-        ),
       ),
     );
   }
