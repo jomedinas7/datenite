@@ -7,6 +7,7 @@ import 'film.dart';
 
 class MoviesClient{
   var cinemaId;
+  var movieId;
   /* These are the testing credentials, they don't show nearby data yet
   When we know everything works we can swap them for the real credentials
   The real credentials only have ~70 requests left, testing have 10,000 */
@@ -21,6 +22,25 @@ class MoviesClient{
     "device-datetime": DateTime.now().toIso8601String(),
   };
 
+
+  getFilmInfo(id) async {
+    var url = "https://api-gate2.movieglu.com/filmDetails/?film_id=$id";
+    var response = await http.get(Uri.parse(url), headers: headers);
+    var parsedBody = jsonDecode(response.body);
+    return createFilmInfo(parsedBody);
+  }
+
+  createFilmInfo(body){
+    List cast = [];
+    body['cast'].forEach((actor) {
+        cast.add(actor['cast_name']);
+      });
+
+    //print(body['trailers']['high'][0]['film_trailer']);
+    return FilmInfo(body['images']['still']['1']['medium']['film_image'],
+      body['synopsis_long'],body['distributor'],body['trailers']['high'][0]['film_trailer'],
+      body['genres'][0]['genre_name'],cast);
+  }
 
   Future<List<Film>> getFilms(id) async {
     var url = "https://api-gate2.movieglu.com/cinemaShowTimes/?cinema_id=$id&date=2021-12-01";
@@ -39,7 +59,6 @@ class MoviesClient{
       List showTimes = [];
       film['showings']['Standard']['times'].forEach((showtime){
         var time = DateFormat.jm().format(DateFormat.Hm().parse(showtime['start_time']));
-        //print(time);
         showTimes.add(time);
       });
 
@@ -54,7 +73,7 @@ class MoviesClient{
 
       Duration dif = end.difference(start);
 
-      films.add(Film(film['film_id'], film['imdb_id'],film['imdb_title_id'],
+      films.add(Film(film['film_id'],
           film['film_name'],film['version_type'],
           film['age_rating'],
           film['images']['poster']['1']['medium']['film_image'],
@@ -69,12 +88,8 @@ class MoviesClient{
     var url = "https://api-gate2.movieglu.com/cinemasNearby/?n=10";
     var response = await http.get(Uri.parse(url), headers: headers);
 
-    //print('Response code: ${response.statusCode}');
-    //print('Response body: ${response.body}');
-
     var parsedBody = jsonDecode(response.body);
-    //print(parsedBody);
-    //print(parsedBody['cinemas']);
+
 
     return createCinemas(parsedBody['cinemas']);
   }
@@ -83,11 +98,9 @@ class MoviesClient{
     List<Cinema> cinemas = [];
 
     body.forEach((cinema) =>
-        //print(cinema)
         cinemas.add(Cinema(cinema['cinema_id'],cinema['cinema_name'],cinema['address'],cinema['address2'],
             cinema['city'],cinema['state'],cinema['county'],cinema['postcode'],cinema['logo_url']))
     );
-   //print(cinemas[0].city);
    return cinemas;
   }
 }
