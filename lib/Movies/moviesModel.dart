@@ -93,6 +93,7 @@ class CinemaButton extends StatelessWidget{
         )),
         onPressed: () {
           client.cinemaId = cinema.id;
+          print(cinema.id);
           Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => MoviesList(client)));
         },);
   }

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
 import 'cinema.dart';
 import 'film.dart';
 
@@ -22,7 +23,7 @@ class MoviesClient{
 
 
   Future<List<Film>> getFilms(id) async {
-    var url = "https://api-gate2.movieglu.com/cinemaShowTimes/?cinema_id=$id&date=2021-11-28";
+    var url = "https://api-gate2.movieglu.com/cinemaShowTimes/?cinema_id=$id&date=2021-12-01";
     var response = await http.get(Uri.parse(url), headers: headers);
     var parsedBody = jsonDecode(response.body);
     return createFilms(parsedBody['films']);
@@ -37,14 +38,27 @@ class MoviesClient{
 
       List showTimes = [];
       film['showings']['Standard']['times'].forEach((showtime){
-        showTimes.add(showtime['start_time']);
+        var time = DateFormat.jm().format(DateFormat.Hm().parse(showtime['start_time']));
+        //print(time);
+        showTimes.add(time);
       });
+
+
+      var endtime = DateFormat.jm().format(DateFormat.Hm().parse(film['showings']['Standard']['times'][0]['end_time']));
+      print(endtime);
+
+
+      DateTime start = DateFormat.jm().parse(showTimes[0]);
+      print(start);
+      DateTime end = DateFormat.jm().parse(endtime);
+
+      Duration dif = end.difference(start);
 
       films.add(Film(film['film_id'], film['imdb_id'],film['imdb_title_id'],
           film['film_name'],film['version_type'],
           film['age_rating'],
           film['images']['poster']['1']['medium']['film_image'],
-          showTimes));
+          showTimes,dif.inMinutes.toString()));
 
     });
 

@@ -81,17 +81,17 @@ class FilmButton extends StatelessWidget{
               children: [
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                    child: Image(image: NetworkImage(film.posterUrl), height: 200)),
+                    child: Image(image: NetworkImage(film.posterUrl), height: 210)),
                 Flexible(
                     fit: FlexFit.tight,
                     child: Column(
                     children: [
                       Text(film.name, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+                      Text('Runtime: ${film.runtime} Minutes', style: TextStyle(color: Colors.white, fontSize: 14))
               ])
    )]),
             Divider(color: Colors.white, thickness: 4),
             Container(
-              color: Colors.grey,
                 height: 30,
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
@@ -99,24 +99,14 @@ class FilmButton extends StatelessWidget{
                       itemCount: film.showtimes.length,
                       itemBuilder: (BuildContext context, int index) {
                         return ElevatedButton(
-                        onPressed: () { print('okay');},
-                        style: ButtonStyle(
-                        fixedSize: MaterialStateProperty.all<Size>(Size(80,30)),
-                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white as Color)),
-                        child: Text(film.showtimes[index], style: TextStyle(color: Colors.red,fontSize: 14)),
+                          onPressed: () { print('okay');},
+                          style: ButtonStyle(
+                          fixedSize: MaterialStateProperty.all<Size>(Size(95,40)),
+                          backgroundColor: MaterialStateProperty.all<Color>(Colors.white as Color)),
+                          child: Text(film.showtimes[index], style: TextStyle(color: Colors.red,fontSize: 14)),
                         );
                       })),
             SizedBox(height: 10)
           ]));
   }
-  // Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  // children: film.showtimes!.map<Widget>((showtime) =>
-  // ElevatedButton(
-  // onPressed: () {  },
-  // style: ButtonStyle(
-  // fixedSize: MaterialStateProperty.all<Size>(Size(80,30)),
-  // backgroundColor: MaterialStateProperty.all<Color>(Colors.white as Color)),
-  // child: Text(showtime, style: TextStyle(color: Colors.red,fontSize: 14)),
-  // )).toList()
-  // )
 }
