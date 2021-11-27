@@ -38,7 +38,9 @@ class CinemasPage extends StatelessWidget{
                                   CinemaButton(cinema),
                                   SizedBox(height: 20)
                                 ])).toList()
-           )]))]));
+           )])),
+               Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
+                   onPressed: ()=> Navigator.pop(context))),]));
           } 
           else {
             return Scaffold(body:
@@ -71,7 +73,7 @@ class CinemaButton extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(width: 5),
-            Image(image: AssetImage('images/film.png'), height: 90, width: 90),
+            Image(image: NetworkImage(cinema.logoUrl), height: 90, width: 90),
             Flexible(
               fit: FlexFit.tight,
               child: Column(

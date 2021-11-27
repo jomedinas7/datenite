@@ -5,10 +5,11 @@ class Film{
   var name;
   var versionRating;
   var ageRating;
+  var posterUrl;
   List showtimes = [];
 
   Film(this.id, this.imdbID, this.titleID, this.name,
-      this.versionRating, this.ageRating,this.showtimes);
+      this.versionRating, this.ageRating,this.posterUrl,this.showtimes);
 
 }
 

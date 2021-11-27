@@ -33,7 +33,10 @@ class MoviesList extends StatelessWidget{
                                           FilmButton(film),
                                           SizedBox(height: 20)
                                         ])).toList()
-                                )]))]));
+                                )])),
+                      Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
+                          onPressed: ()=> Navigator.pop(context))),
+                    ]));
           }
           else {
             return Scaffold(body:
@@ -67,12 +70,12 @@ class FilmButton extends StatelessWidget{
       child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(width: 5),
-            Image(image: AssetImage('images/film.png'), height: 90, width: 90),
+            Image(image: NetworkImage(film.posterUrl), height: 165),
+            SizedBox(width: 20),
             Flexible(
                 fit: FlexFit.tight,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(film.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
@@ -82,7 +85,7 @@ class FilmButton extends StatelessWidget{
       ),
       style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Colors.red[800] as Color),
-          fixedSize: MaterialStateProperty.all<Size>(Size(350, 120)),
+          fixedSize: MaterialStateProperty.all<Size>(Size(350, 180)),
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
           )),

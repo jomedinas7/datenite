@@ -42,7 +42,9 @@ class MoviesClient{
 
       films.add(Film(film['film_id'], film['imdb_id'],film['imdb_title_id'],
           film['film_name'],film['version_type'],
-          film['age_rating'], showTimes));
+          film['age_rating'],
+          film['images']['poster']['1']['medium']['film_image'],
+          showTimes));
 
     });
 
