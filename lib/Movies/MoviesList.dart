@@ -1,3 +1,4 @@
+import 'package:date_format/date_format.dart';
 import 'package:datenite/Movies/film.dart';
 import 'package:datenite/Movies/moviesClient.dart';
 import 'package:flutter/cupertino.dart';
@@ -40,13 +41,13 @@ class MoviesList extends StatelessWidget{
           }
           else {
             return Scaffold(body:
-            Padding(
-                padding: const EdgeInsets.all(180),
-                child:Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [CircularProgressIndicator()]
-                )));
+              Padding(
+                  padding: const EdgeInsets.all(180),
+                  child:Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [CircularProgressIndicator()]
+                  )));
           }
         }
     );
@@ -66,33 +67,56 @@ class FilmButton extends StatelessWidget{
     return _buildButton(this.film);
   }
   Widget _buildButton(film) {
-    return ElevatedButton(
-      child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Image(image: NetworkImage(film.posterUrl), height: 165),
-            SizedBox(width: 20),
-            Flexible(
-                fit: FlexFit.tight,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(film.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
-                    Text(film.showtimes[0], style: TextStyle(color: Colors.white,fontSize: 15))
-                  ],))
-          ]
+    return Container(
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          color: Colors.red[700],
       ),
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.red[800] as Color),
-          fixedSize: MaterialStateProperty.all<Size>(Size(350, 180)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
-          )),
-      onPressed: () {
-        //print(film.id);
-        Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => Scaffold()));
-      },);
+      margin: const EdgeInsets.all(10),
+      width: 350,
+      child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                    child: Image(image: NetworkImage(film.posterUrl), height: 200)),
+                Flexible(
+                    fit: FlexFit.tight,
+                    child: Column(
+                    children: [
+                      Text(film.name, style: TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold)),
+              ])
+   )]),
+            Divider(color: Colors.white, thickness: 4),
+            Container(
+              color: Colors.grey,
+                height: 30,
+                child: ListView.separated(
+                  scrollDirection: Axis.horizontal,
+                      separatorBuilder: (BuildContext context, int index) => SizedBox(width: 5),
+                      itemCount: film.showtimes.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return ElevatedButton(
+                        onPressed: () { print('okay');},
+                        style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all<Size>(Size(80,30)),
+                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white as Color)),
+                        child: Text(film.showtimes[index], style: TextStyle(color: Colors.red,fontSize: 14)),
+                        );
+                      })),
+            SizedBox(height: 10)
+          ]));
   }
-
+  // Row( mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+  // children: film.showtimes!.map<Widget>((showtime) =>
+  // ElevatedButton(
+  // onPressed: () {  },
+  // style: ButtonStyle(
+  // fixedSize: MaterialStateProperty.all<Size>(Size(80,30)),
+  // backgroundColor: MaterialStateProperty.all<Color>(Colors.white as Color)),
+  // child: Text(showtime, style: TextStyle(color: Colors.red,fontSize: 14)),
+  // )).toList()
+  // )
 }
