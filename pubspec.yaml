@@ -27,6 +27,7 @@ dependencies:
   firebase_analytics: ^9.0.0-dev.3
   firebase_auth: ^3.2.0
   cloud_functions: ^3.1.1
+  cloud_firestore: ^3.1.0
   authentication_provider: ^1.0.1
   provider: ^5.0.0-nullsafety.3
   fluttertoast: 8.0.8
@@ -35,6 +36,7 @@ dependencies:
   flutter_calendar_carousel: ^2.0.3
   table_calendar: ^2.2.1
   date_format: ^2.0.4
+  email_validator: 2.0.1
   flutter:
     sdk: flutter
 

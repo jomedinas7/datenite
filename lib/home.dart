@@ -5,6 +5,7 @@ import 'calendar.dart';
 import 'sign_up_page.dart';
 import 'main.dart';
 import 'package:provider/provider.dart';
+import 'authentication_service.dart';
 
 class Home extends StatelessWidget{
   displayToast(){
@@ -15,8 +16,18 @@ class Home extends StatelessWidget{
     Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Calendar()));
   }
 
-  signOut(){
+  signOut() async {
+    print("WOOOO");
+    List collections = await globalContext.read<AuthModel>().getCollectionList();
+    for (int i =0; i<collections.length; i++){
+      print(collections[0].get('firstName'));
+    }
+    print("____________________________________________");
+    print(globalContext.read<AuthModel>().isSignedIn);
+    print(globalContext.read<AuthModel>().currentUser);
+    print(globalContext.read<AuthModel>().currentUserInfo);
     globalContext.read<AuthModel>().signOut();
+
     Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => MyApp()));
   }
 

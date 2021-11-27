@@ -1,6 +1,7 @@
 import 'package:datenite/sign_up_page.dart';
 import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 import 'sign_up_page.dart';
@@ -11,33 +12,12 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'authentication_service.dart';
 import 'package:provider/provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 late BuildContext globalContext;
-
-class AuthModel extends ChangeNotifier {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  bool get isSignedIn => _auth.currentUser != null;
-
-  Future<void> signIn({required String email, required String password}) async {
-    try {
-      await _auth.signInWithEmailAndPassword(email: email, password: password);
-      print("Signed in");
-      notifyListeners();
-      Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Home()));
-    } on FirebaseAuthException catch (e) {
-      print(e.message.toString());
-    }
-  }
-
-  Future<void> signOut() async {
-    await _auth.signOut();
-    notifyListeners();
-  }
-}
-
+bool signedIn = false;
 
 // https://stackoverflow.com/questions/62540012/custom-username-and-password-login-using-flutter-firebase
-
 //https://pub.dev/packages/authentication_provider
 
 void main() async {
@@ -54,7 +34,7 @@ void main() async {
           ),
         ),
       ),
-  );git a
+  );
 }
 
 
@@ -142,8 +122,13 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             Padding(
               padding: EdgeInsets.all(10),
-              child: TextField(
+              child: TextFormField(
                 controller: passwordController,
+                validator: (value) {
+                  if (value != null && value.length<1) {
+                    return 'Enter Something';
+                  }
+                },
                 style: TextStyle(color: Colors.white),
                 obscureText: true,
                 decoration: InputDecoration(
@@ -174,7 +159,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   // verifyUser();
 
                   globalContext = context;
-                  print(globalContext.read<AuthModel>().signIn(email: usernameController.text.toString(), password: passwordController.text.toString()));
+                  globalContext.read<AuthModel>().signIn(email: usernameController.text.toString(), password: passwordController.text.toString());
+
                   //notifyListeners();
                   },
                 child: Text('Login',

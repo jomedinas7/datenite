@@ -1,60 +1,75 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'main.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'home.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
+class AuthModel extends ChangeNotifier {
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  bool get isSignedIn => _auth.currentUser != null;
+  User? get currentUser => _auth.currentUser;
+  List get currentUserInfo => [_auth.currentUser!.uid, _auth.currentUser!.displayName];
+  // var get currentUserName => _auth.currentUser!.firstName;
+
+  Future<List> getCollectionList() async {
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    var list = querySnapshot.docs;
+    return list;
+  }
+
+  Future<List> getFirstNameFromCollection(/*uid*/) async {
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    var list = querySnapshot.docs;
+    return list;
+  }
 
 
-// AuthService() {
-//   user = Observable(_auth.onAuthStateChanged);
-//
-//   profile = user.switchMap((FirebaseUser u) {
-//     if (u != null) {
-//       return _db
-//           .collection('users')
-//           .document(u.uid)
-//           .snapshots()
-//           .map((snap) => snap.data);
-//     } else {
-//       return Observable.just({});
-//     }
-//   });
-// }
+  Future<void> signIn({required String email, required String password}) async {
+    try {
+      await _auth.signInWithEmailAndPassword(email: email, password: password);
+      signedIn = true;
+      print("Signed in");
+      notifyListeners();
+      Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Home()));
+    } on FirebaseAuthException catch (e) {
+      print(e.message.toString());
 
-class AuthenticationService {
-  final FirebaseAuth _firebaseAuth;
 
-  AuthenticationService(this._firebaseAuth);
+      Fluttertoast.showToast(msg: e.message.toString());
+      // showDialog(context: globalContext, builder: (_) => CupertinoAlertDialog(
+      //   title: Text(e.message.toString()),
+      // ),
+      // );
+    }
+  }
 
-  /// Changed to idTokenChanges as it updates depending on more cases.
-  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+  Future<void> signUp(
+      {required String email, required String password,
+        required String firstName, required String lastName}) async {
+    try {
+      await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
 
-  /// This won't pop routes so you could do something like
-  /// Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
-  /// after you called this method if you want to pop all routes.
+      User? user = _auth.currentUser;
+      firestore.collection("users").add({
+        'uid': user?.uid,
+        'firstName': firstName,
+        'lastName': lastName,
+      }
+      );
+      print("Signed Up");
+      notifyListeners();
+      Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => MyApp()));
+    } on FirebaseAuthException catch (e) {
+      print(e.message.toString());
+    }
+  }
+
   Future<void> signOut() async {
-    await _firebaseAuth.signOut();
-  }
-
-  /// There are a lot of different ways on how you can do exception handling.
-  /// This is to make it as easy as possible but a better way would be to
-  /// use your own custom class that would take the exception and return better
-  /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  Future<String> signIn({required String email, required String password}) async {
-    try {
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
-      return "Signed in";
-    } on FirebaseAuthException catch (e) {
-      return e.message.toString();
-    }
-  }
-
-  /// There are a lot of different ways on how you can do exception handling.
-  /// This is to make it as easy as possible but a better way would be to
-  /// use your own custom class that would take the exception and return better
-  /// error messages. That way you can throw, return or whatever you prefer with that instead.
-  Future<String> signUp({required String email, required String password}) async {
-    try {
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
-      return "Signed up";
-    } on FirebaseAuthException catch (e) {
-      return e.message.toString();
-    }
+    await _auth.signOut();
+    notifyListeners();
   }
 }
