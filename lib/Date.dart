@@ -1,6 +1,6 @@
 abstract class Date{
-  var Movie;
-  var Restaurant;
-  var Activity;
+  var movie;
+  var restaurant;
+  var activity;
 
 }

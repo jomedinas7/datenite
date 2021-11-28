@@ -81,7 +81,7 @@ class _MyAppPageState extends State<MyAppPage> {
 
     return Scaffold(
       backgroundColor: Colors.red[800],
-      body: Center(
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
@@ -178,7 +178,8 @@ class _MyAppPageState extends State<MyAppPage> {
                 'Sign Up',
                 style: TextStyle(color: Colors.white, fontFamily: 'Typo',fontSize: 20),
               ),
-            )
+            ),
+            SizedBox(height: 108)
           ]
         ),
       )
