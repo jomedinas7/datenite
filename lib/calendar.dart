@@ -1,5 +1,4 @@
 import 'package:datenite/Movies/moviesClient.dart';
-import 'package:datenite/Restaurants/RestaurantsClient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,8 +8,32 @@ import "package:flutter_calendar_carousel/" "flutter_calendar_carousel.dart";
 import "package:flutter_calendar_carousel/classes/event.dart";
 import "package:flutter_calendar_carousel/classes/event_list.dart";
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
+import 'package:intl/intl.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 DateTime currentDate = DateTime.now();
+
+class Appointment {
+  Appointment(String title, String date, String time){
+    this.title = title;
+    this.date = date;
+    this.time = time;
+  }
+  int id = -1;
+  String title = '';
+  String description = '';
+  String date = '';
+  String time = '';
+
+  bool hasTime() => time != '';
+
+  @override
+  String toString()  =>
+      "{ id=$id, title=$title, description=$description, date=$date, time=$time }";
+}
+
+List<Appointment> aptList = [Appointment("First","11/12/21", "2:30 PM"),Appointment("Second", "11/12/21", "4:30 PM"),];
 
 class Calendar extends StatefulWidget {
 
@@ -28,6 +51,101 @@ class _CalendarState extends State<Calendar> {
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
+
+  void _showAppointments(DateTime inDate, BuildContext inContext) async {
+    showModalBottomSheet(context: inContext,
+        builder: (BuildContext inContext) {
+          return Scaffold(
+              body: Container(child: Padding(
+                  padding: EdgeInsets.all(10), child: GestureDetector(
+                  child: Column(
+                      children: [
+                        Text(DateFormat.yMMMMd("en_US").format(inDate
+                            .toLocal()), textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.red,fontSize:24)),
+                        Divider(),
+                        Expanded(
+                            child: ListView.builder(
+                                itemCount: aptList.length,
+                                itemBuilder: (BuildContext inBuildContext,
+                                    int inIndex) {
+                                  Appointment appointment =
+                                  aptList[inIndex];
+                                  if (appointment.date !=
+                                      "${inDate.year},${inDate
+                                          .month},${inDate
+                                          .day}") {
+                                    return Container(height: 0);
+                                  }
+                                  String apptTime = appointment.time;
+                                  // if (appointment.time != '') {
+                                  //   List timeParts = appointment.time
+                                  //       .split(",");
+                                  //   TimeOfDay at = TimeOfDay(
+                                  //       hour: int.parse(timeParts[0]),
+                                  //       minute: int.parse(
+                                  //           timeParts[1]));
+                                  //   apptTime =
+                                  //   " (${at.format(inContext)})";
+                                  // }
+
+                                  return Slidable(
+                                      actionPane: const SlidableDrawerActionPane(),
+                                      actionExtentRatio: .25,
+                                      child: Container(
+                                          margin: EdgeInsets.only(
+                                              bottom: 8),
+                                          color: Colors.grey.shade300,
+                                          child: ListTile(
+                                              title: Text(
+                                                  "${appointment
+                                                      .title}$apptTime"),
+                                              subtitle: appointment.date == ''
+                                                  ? null
+                                                  : Text(appointment.date),
+                                              onTap: () async {
+                                                // _editAppointment(
+                                                //     inContext,
+                                                //     appointment);
+                                              })
+                                      ),
+                                      secondaryActions: [
+                                        IconSlideAction(
+                                            caption: "Delete",
+                                            color: Colors.red,
+                                            icon: Icons.delete,
+                                            onTap: () => {}
+                                          // _deleteAppointment(
+                                          //     inBuildContext,
+                                          //     inModel,
+                                          //     appointment)
+                                        )
+                                      ]
+                                  );
+                                }
+                            )
+                        )
+                      ,
+                        Container(
+                            height:40,
+                            width: 200,
+                            child: ElevatedButton(onPressed: (){
+                              var cines = MoviesClient().getCinemas();
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
+                            }, child: Text('Let\'s plan!',style:
+                            TextStyle(fontSize: 18),
+                            ),
+                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
+                        )]
+                  )
+              )
+              )
+              )
+          );
+        }
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -40,6 +158,7 @@ class _CalendarState extends State<Calendar> {
             icon: const Icon(Icons.circle),
             dot: Container(
               margin: EdgeInsets.symmetric(horizontal: 1.0),
+              //color: Colors.green,
               height: 5.0,
               width: 5.0,
             ),
@@ -104,6 +223,7 @@ class _CalendarState extends State<Calendar> {
                                       headerMargin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                                       weekDayFormat: WeekdayFormat.narrow,
                                       onDayPressed: (DateTime date, List<Event> events) {
+                                        _showAppointments(date, context);
                                         this.setState(() => currentDate = date);
                                         events.forEach((event) => print(event.title));
                                       },
@@ -113,19 +233,14 @@ class _CalendarState extends State<Calendar> {
                       ),
                       Container(
                           height:40,
-                          width: 200,
-                          child: ElevatedButton(onPressed: (){
-                            //var cines = MoviesClient().getCinemas();
-                            //Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
-                            var restaurants = RestaurantsClient().getRestaurantsByZIP(79912);
-                            }, child: Text('Let\'s plan!',style:
-                          TextStyle(fontSize: 18),
+                          decoration: BoxDecoration(
+                              color: Colors.red[700],
+                            border: Border.all(color: Colors.black)
                           ),
-                          style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
+                          child: Center(child:Text('Select a Date!',
+                            style:TextStyle(color: Colors.white, fontSize: 18),
+                          )),
                       )
-                      // Divider(color: Colors.grey,thickness: 2,indent: 10,endIndent: 10),
-                      // Container(height: 200, width: MediaQuery.of(context).size.width,
-                      //     child: ListView())
                     ]
                   )
               ),
