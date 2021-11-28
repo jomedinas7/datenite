@@ -71,7 +71,7 @@ class FilmButton extends StatelessWidget{
   Widget _buildButton(film) {
     return GestureDetector(
         child: Container(
-      decoration: BoxDecoration(
+          decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(10)),
           color: Colors.red[700],
       ),
@@ -112,7 +112,8 @@ class FilmButton extends StatelessWidget{
             SizedBox(height: 10)
           ])),
             onTap:(){
-            client.movieId = film.id;
+            print(film.id);
+            client.film = film;
             showDialog(context: this.parentContext, builder: (BuildContext) => _buildPopupDialog(this.parentContext));
           },
     );
@@ -121,38 +122,70 @@ class FilmButton extends StatelessWidget{
 
 Widget _buildPopupDialog(BuildContext context) {
   return FutureBuilder(
-      future: client.getFilmInfo(client.movieId),
+      future: client.getFilmInfo(client.film.id),
       builder: (context, AsyncSnapshot snapshot) {
       if (snapshot.hasData) {
-          return Scaffold(
-            backgroundColor: Colors.transparent,
-            body: new Column(
+          return GestureDetector(
+              child: Scaffold(
+                backgroundColor: Colors.transparent,
+                body: SingleChildScrollView (child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(10)),
-                          color: Colors.white,
-                          ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(snapshot.data.synopsis)
-                          ],),
-                          )])]
-  ));}
+                        Flexible(
+                            child: Container(
+                              padding: EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              color: Colors.white,
+                              ),
+                              child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(client.film.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)),
+                                Divider(thickness: 2),
+                                Image(image: NetworkImage(snapshot.data.imageUrl)),
+                                Divider(thickness: 2),
+                                Text('Genre: ${snapshot.data.genre}', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                                Divider(thickness: 2),
+                                Text('Synopsis: ${snapshot.data.synopsis}'),
+                                Divider(thickness: 2),
+                                Text('Cast', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                                SizedBox(height: 10),
+                                Container(
+                                    height: 80,
+                                    child: ListView.separated(
+                                        scrollDirection: Axis.horizontal,
+                                        separatorBuilder: (BuildContext context, int index) => SizedBox(width: 5),
+                                        itemCount: snapshot.data.cast.length,
+                                        itemBuilder: (BuildContext context, int index) {
+                                          return ElevatedButton(
+                                            onPressed: () { print('okay');},
+                                            style: ButtonStyle(
+                                                fixedSize: MaterialStateProperty.all<Size>(Size(95,70)),
+                                                backgroundColor: MaterialStateProperty.all<Color>(Colors.red as Color)),
+                                            child: Text(snapshot.data.cast[index], style: TextStyle(color: Colors.white,fontSize: 14)),
+                                          );
+                                        })),
+                                SizedBox(height: 20),
+                              ],),
+                              ))])]
+            ))),
+          onTap: (){Navigator.pop(context);},
+          );}
       else {
-        return Scaffold(body:
+        return Scaffold(
+          backgroundColor: Colors.transparent,
+            body:
         Padding(
             padding: const EdgeInsets.all(180),
             child:Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: [CircularProgressIndicator()]
+                children: [CircularProgressIndicator(color: Colors.white,)]
             )));
       }
       });

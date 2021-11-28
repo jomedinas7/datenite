@@ -7,7 +7,7 @@ import 'film.dart';
 
 class MoviesClient{
   var cinemaId;
-  var movieId;
+  late Film film;
   /* These are the testing credentials, they don't show nearby data yet
   When we know everything works we can swap them for the real credentials
   The real credentials only have ~70 requests left, testing have 10,000 */
@@ -36,10 +36,15 @@ class MoviesClient{
         cast.add(actor['cast_name']);
       });
 
-    //print(body['trailers']['high'][0]['film_trailer']);
-    return FilmInfo(body['images']['still']['1']['medium']['film_image'],
-      body['synopsis_long'],body['distributor'],body['trailers']['high'][0]['film_trailer'],
+    //Need to check every field for null
+    FilmInfo info = FilmInfo(body['images']['still']['1']['medium']['film_image'],
+      body['synopsis_long'],body['distributor'],
       body['genres'][0]['genre_name'],cast);
+    print(info.genre);
+    if (body['trailers'] != null){
+      info.trailerUrl = body['trailers']['high'][0]['film_trailer'];
+    }
+    return info;
   }
 
   Future<List<Film>> getFilms(id) async {

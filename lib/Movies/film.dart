@@ -20,6 +20,6 @@ class FilmInfo{
   var genre;
   List cast = [];
 
-  FilmInfo(this.imageUrl, this.synopsis, this.distributor, this.trailerUrl,
+  FilmInfo(this.imageUrl, this.synopsis, this.distributor,
       this.genre, this.cast);
 }
