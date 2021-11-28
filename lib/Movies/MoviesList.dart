@@ -4,9 +4,7 @@ import 'package:datenite/Movies/moviesClient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../main.dart';
 import '../widgets.dart';
-import 'cinema.dart';
 import 'moviesModel.dart';
 
 class MoviesList extends StatelessWidget{

@@ -1,4 +1,5 @@
 import 'package:datenite/Movies/moviesClient.dart';
+import 'package:datenite/Restaurants/RestaurantsClient.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -39,7 +40,6 @@ class _CalendarState extends State<Calendar> {
             icon: const Icon(Icons.circle),
             dot: Container(
               margin: EdgeInsets.symmetric(horizontal: 1.0),
-              //color: Colors.green,
               height: 5.0,
               width: 5.0,
             ),
@@ -115,8 +115,9 @@ class _CalendarState extends State<Calendar> {
                           height:40,
                           width: 200,
                           child: ElevatedButton(onPressed: (){
-                            var cines = MoviesClient().getCinemas();
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
+                            //var cines = MoviesClient().getCinemas();
+                            //Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
+                            var restaurants = RestaurantsClient().getRestaurantsByZIP(79912);
                             }, child: Text('Let\'s plan!',style:
                           TextStyle(fontSize: 18),
                           ),
