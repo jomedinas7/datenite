@@ -80,7 +80,8 @@ class CinemaButton extends StatelessWidget{
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(cinema.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
+                  Text(cinema.name, style: TextStyle(color: Colors.white, fontSize: 25,
+                      fontWeight: FontWeight.bold)),
                   Text(cinema.address, style: TextStyle(color: Colors.white,fontSize: 15))
                 ],))
               ]
@@ -89,7 +90,8 @@ class CinemaButton extends StatelessWidget{
             backgroundColor: MaterialStateProperty.all<Color>(Colors.red[800] as Color),
             fixedSize: MaterialStateProperty.all<Size>(Size(350, 120)),
             shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side:
+            BorderSide(color: Colors.red)),
         )),
         onPressed: () {
           client.cinemaId = cinema.id;

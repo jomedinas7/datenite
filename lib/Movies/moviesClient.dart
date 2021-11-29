@@ -60,15 +60,18 @@ class MoviesClient{
 
     body.forEach((film) {
       print(film['film_name']);
+      print(film['film_id']);
 
       List showTimes = [];
       film['showings']['Standard']['times'].forEach((showtime){
-        var time = DateFormat.jm().format(DateFormat.Hm().parse(showtime['start_time']));
+        var time = DateFormat.jm().format(DateFormat.Hm().parse(
+            showtime['start_time']));
         showTimes.add(time);
       });
 
 
-      var endtime = DateFormat.jm().format(DateFormat.Hm().parse(film['showings']['Standard']['times'][0]['end_time']));
+      var endtime = DateFormat.jm().format(DateFormat.Hm().parse(
+          film['showings']['Standard']['times'][0]['end_time']));
       print(endtime);
 
 
@@ -78,6 +81,7 @@ class MoviesClient{
 
       Duration dif = end.difference(start);
 
+      // TODO: Check all queries for null, then add them...otherwise app hangs
       films.add(Film(film['film_id'],
           film['film_name'],film['version_type'],
           film['age_rating'],
@@ -103,8 +107,9 @@ class MoviesClient{
     List<Cinema> cinemas = [];
 
     body.forEach((cinema) =>
-        cinemas.add(Cinema(cinema['cinema_id'],cinema['cinema_name'],cinema['address'],cinema['address2'],
-            cinema['city'],cinema['state'],cinema['county'],cinema['postcode'],cinema['logo_url']))
+        cinemas.add(Cinema(cinema['cinema_id'],cinema['cinema_name'],
+            cinema['address'],cinema['address2'], cinema['city'],cinema['state'],
+            cinema['county'],cinema['postcode'],cinema['logo_url']))
     );
    return cinemas;
   }

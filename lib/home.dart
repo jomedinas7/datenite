@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'calendar.dart';
-import 'sign_up_page.dart';
 import 'main.dart';
 import 'package:provider/provider.dart';
 import 'authentication_service.dart';
