@@ -107,7 +107,7 @@ class _CalendarState extends State<Calendar> {
                                       child: Container(
                                           margin: EdgeInsets.only(
                                               bottom: 8),
-                                          color: apptType == "Movie" ? Colors.red[200] : Colors.purple[100],
+                                          color: apptType == "Movies" ? Colors.red[200] : Colors.purple[100],
                                           child: ListTile(
                                               title: Row(children: [
                                                 Text("${appointment.title} "),

@@ -1,9 +1,11 @@
 import 'package:datenite/Restaurants/RestaurantsClient.dart';
 import 'package:datenite/Restaurants/restaurant.dart';
+import 'package:datenite/calendar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import '../widgets.dart';
+import 'package:datenite/date_creation.dart';
 import 'RestaurantsList.dart';
 
 var client = RestaurantsClient();
@@ -85,7 +87,10 @@ class RestaurantButton extends StatelessWidget{
                         height: 80,
                         child: client.createFoodWidget(restaurant.cuisine)),
                     SizedBox(height: 10),
-                    ElevatedButton(onPressed: (){}, child: Text(
+                    ElevatedButton(onPressed: (){
+                      Appointment currentApt = Appointment(restaurant.name, currentDate, '3:00 PM', restaurant.address, 'Food');
+                      Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => DateCreation(currentApt)));
+                    }, child: Text(
                       'Eat Here', style: TextStyle(color: Colors.red[800]),
                     ), style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(CupertinoColors.white)
