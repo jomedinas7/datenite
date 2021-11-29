@@ -13,7 +13,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'main.dart';
 import 'package:provider/provider.dart';
 import 'authentication_service.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'date_creation.dart';
 
 DateTime currentDate = DateTime.now();
 List userCalendarEvents = [];
@@ -113,9 +113,7 @@ class _CalendarState extends State<Calendar> {
                                               ]),
                                               subtitle: Text('$apptAddress', style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic)),
                                               onTap: () async {
-                                                // _editAppointment(
-                                                //     inContext,
-                                                //     appointment);
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment)));
                                               })
                                       ),
                                       secondaryActions: [
@@ -140,6 +138,7 @@ class _CalendarState extends State<Calendar> {
                             width: 200,
                             child: ElevatedButton(onPressed: (){
                               var cines = MoviesClient().getCinemas();
+
                               Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
                             }, child: Text('Let\'s plan!',style:
                             TextStyle(fontSize: 18),

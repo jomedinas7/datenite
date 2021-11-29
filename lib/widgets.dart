@@ -111,3 +111,30 @@ Widget calendarWidget(){
             ))
       ]);
 }
+
+Widget dateCreationTop(title,subtitle,context){
+  return Container(
+      padding: EdgeInsets.fromLTRB(0,70,0,0),
+      decoration: BoxDecoration(
+          color: Colors.red[800],
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      height: 225,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(child: Text(title,
+                        style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 32))),
+                    SizedBox(height: 8),
+                    Container(child: Text(subtitle,
+                        style: TextStyle(color: Colors.white, fontSize: 22))),
+                  ]),
+            )
+          ]
+      )
+  );
+}
