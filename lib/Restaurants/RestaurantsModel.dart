@@ -61,36 +61,49 @@ class RestaurantButton extends StatelessWidget{
   }
 
   Widget _buildButton(restaurant) {
-    return ElevatedButton(
-      child: Row(
+    return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(10)),
+          color: Colors.red[700]),
+        margin: const EdgeInsets.all(10),
+        width: 350,
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            SizedBox(width: 5),
             Flexible(
                 fit: FlexFit.tight,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    SizedBox(height: 10),
                     Text(restaurant.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
+                    SizedBox(height: 10),
                     Text(restaurant.address, style: TextStyle(color: Colors.white,fontSize: 15)),
+                    SizedBox(height: 10),
                     Container(
-                        height: 50,
-                        child: client.createFoodWidget(restaurant.cuisine))
+                        height: 80,
+                        child: client.createFoodWidget(restaurant.cuisine)),
+                    SizedBox(height: 10),
+                    ElevatedButton(onPressed: (){}, child: Text(
+                      'Eat Here', style: TextStyle(color: Colors.red[800]),
+                    ), style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(CupertinoColors.white)
+                    ),)
                   ],))
           ]
-      ),
-      style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(Colors.red[800] as Color),
-          fixedSize: MaterialStateProperty.all<Size>(Size(350, 120)),
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
-          )),
-      onPressed: () {
-        client.restaurantId = res.id;
-        print(res.id);
-        Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => RestaurantsList(client)));
-      },);
+      ));
+      // style: ButtonStyle(
+      //     backgroundColor: MaterialStateProperty.all<Color>(Colors.red[800] as Color),
+      //     fixedSize: MaterialStateProperty.all<Size>(Size(350, 120)),
+      //     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+      //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(18),side: BorderSide(color: Colors.red)),
+      //     )),
+      // onPressed: () {
+      //   client.restaurantId = res.id;
+      //   print(res.id);
+      //   Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => RestaurantsList(client)));
+      // },);
   }
 
 }

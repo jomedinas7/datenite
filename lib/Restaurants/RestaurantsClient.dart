@@ -11,7 +11,6 @@ class RestaurantsClient{
   var menu;
 
   Map<String,AssetImage> foodImgs = {
-    //'American': AssetImage('images/food/Burgers.png'),
     'Barbecue': AssetImage('images/food/Barbecue.png'),
     'Breakfast': AssetImage('images/food/Breakfast.png'),
     'Steak': AssetImage('images/food/Steak.png'),
@@ -25,12 +24,13 @@ class RestaurantsClient{
     'Seafood': AssetImage('images/food/Seafood.png'),
     'Coffee & Tea': AssetImage('images/food/Coffee & Tea.png'),
     'Pasta': AssetImage('images/food/Pasta.png'),
-    //'Italian': AssetImage('images/food/Pasta.png'),
     'Pizza': AssetImage('images/food/Pizza.png'),
     'Bakery & Pastries': AssetImage('images/food/Bakery & Pastries.png'),
     'Hot Dogs': AssetImage('images/food/Hot Dogs.png'),
     'Wraps': AssetImage('images/food/Wraps.png'),
     'Salads': AssetImage('images/food/Salads.png'),
+    //'American': AssetImage('images/food/Burgers.png'),
+    //'Italian': AssetImage('images/food/Pasta.png'),
   };
 
 
@@ -74,16 +74,17 @@ class RestaurantsClient{
     }
 
     return ListView.separated(
+      shrinkWrap: true,
       itemCount: foods.length,
-      separatorBuilder: (BuildContext context, int index) =>SizedBox(width: 5),
+      separatorBuilder: (BuildContext context, int index) =>SizedBox(width: 20),
       scrollDirection: Axis.horizontal,
       itemBuilder: (BuildContext context, int index) {
         return Container(
           child: Column(
             children: [
               InvertColors(
-                child: Image(image: foodImgs[foods[index]] as AssetImage, height: 30,width: 30)),
-              Text(foods[index])
+                child: Image(image: foodImgs[foods[index]] as AssetImage, height: 50,width: 50)),
+              Text(foods[index], style: TextStyle(color: CupertinoColors.white),)
             ],
           ),
         );
