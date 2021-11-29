@@ -11,15 +11,15 @@ class RestaurantsClient{
     "x-api-key": "d1c94f721d86e3e3b812d5681f5cf7ad"
   };
 
-  getRestaurantsByZIP(zip) async {
+  Future<List<Restaurant>> getRestaurantsByZIP(zip) async {
     var url = 'https://api.documenu.com/v2/restaurants/zip_code/$zip?fullmenu=true';
     var response = await http.get(Uri.parse(url), headers: headers);
     var parsedBody = json.decode(response.body);
-    print(parsedBody['data']); // data is an [] array of restaurants data
-    //return createRestaurants(parsedBody['data']);
+    //print(parsedBody['data']); // data is an [] array of restaurants data
+    return createRestaurants(parsedBody['data']);
   }
 
-  createRestaurants(resArr) {
+  List<Restaurant> createRestaurants(resArr) {
 
     List<Restaurant> restaurants = [];
 
@@ -30,10 +30,13 @@ class RestaurantsClient{
               res['restaurant_website'], res['restaurant_id'],res['cuisines'] ,res['address']['formatted'],
             res['menus']
           ));
-
     });
-
+    print('Done');
+    return restaurants;
   }
 
+  makeFoodWidget(cuisines){
+
+  }
 
 }

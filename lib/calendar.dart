@@ -1,4 +1,6 @@
 import 'package:datenite/Movies/moviesClient.dart';
+import 'package:datenite/Restaurants/RestaurantsClient.dart';
+import 'package:datenite/Restaurants/RestaurantsModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -130,11 +132,12 @@ class _CalendarState extends State<Calendar> {
                             height:40,
                             width: 200,
                             child: ElevatedButton(onPressed: (){
-                              var cines = MoviesClient().getCinemas();
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
-                            }, child: Text('Let\'s plan!',style:
-                            TextStyle(fontSize: 18),
-                            ),
+                              //var cines = MoviesClient().getCinemas();
+                              //Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
+                              var res = RestaurantsClient().getRestaurantsByZIP(79912);
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantsPage()));
+
+                            },child: Text('Let\'s plan!',style: TextStyle(fontSize: 18)),
                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
                         )]
                   )
@@ -234,8 +237,7 @@ class _CalendarState extends State<Calendar> {
                       Container(
                           height:40,
                           decoration: BoxDecoration(
-                              color: Colors.red[700],
-                            border: Border.all(color: Colors.black)
+                              color: Colors.red[800],
                           ),
                           child: Center(child:Text('Select a Date!',
                             style:TextStyle(color: Colors.white, fontSize: 18),

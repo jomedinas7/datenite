@@ -21,7 +21,7 @@ class RestaurantsPage extends StatelessWidget{
                       SingleChildScrollView(
                           child: Column(
                               children: [
-                                calendarTopContainer('Theaters Near You', context),
+                                calendarTopContainer('Restaurants Near You', context),
                                 SizedBox(height: 20),
                                 Column(
                                     children:
@@ -60,21 +60,22 @@ class RestaurantButton extends StatelessWidget{
     return _buildButton(this.res);
   }
 
-  Widget _buildButton(cinema) {
+  Widget _buildButton(restaurant) {
     return ElevatedButton(
       child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(width: 5),
-            Image(image: NetworkImage(cinema.logoUrl), height: 90, width: 90),
+            //Image(image: NetworkImage(restaurant.logoUrl), height: 90, width: 90),
+            Icon(Icons.flatware),
             Flexible(
                 fit: FlexFit.tight,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(cinema.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
-                    Text(cinema.address, style: TextStyle(color: Colors.white,fontSize: 15))
+                    Text(restaurant.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
+                    Text(restaurant.address, style: TextStyle(color: Colors.white,fontSize: 15))
                   ],))
           ]
       ),

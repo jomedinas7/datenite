@@ -67,6 +67,19 @@ flutter:
     - images/art.png
     - images/defaultUser.png
     - images/Simu.jpg
+    - images/food/Barbecue.png
+    - images/food/Breakfast.png
+    - images/food/Burgers.png
+    - images/food/Chicken.png
+    - images/food/Coffee & Tea.png
+    - images/food/Pasta.png
+    - images/food/Pizza.png
+    - images/food/Sandwhiches.png
+    - images/food/Seafood.png
+    - images/food/Soups.png
+    - images/food/Steak.png
+    - images/food/Tacos.png
+
   uses-material-design: true
   fonts:
     - family: Typo
