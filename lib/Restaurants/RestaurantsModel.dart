@@ -66,16 +66,17 @@ class RestaurantButton extends StatelessWidget{
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(width: 5),
-            //Image(image: NetworkImage(restaurant.logoUrl), height: 90, width: 90),
-            Icon(Icons.flatware),
             Flexible(
                 fit: FlexFit.tight,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(restaurant.name, style: TextStyle(color: Colors.white, fontSize: 25, fontWeight: FontWeight.bold)),
-                    Text(restaurant.address, style: TextStyle(color: Colors.white,fontSize: 15))
+                    Text(restaurant.address, style: TextStyle(color: Colors.white,fontSize: 15)),
+                    Container(
+                        height: 50,
+                        child: client.createFoodWidget(restaurant.cuisine))
                   ],))
           ]
       ),
