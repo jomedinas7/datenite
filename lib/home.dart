@@ -96,11 +96,11 @@ class Home extends StatelessWidget{
               SizedBox(height: 30),
               MenuOption('Dinner + Show', 'A timeless classic', toCalendar, 'images/wineHearts.png'),
               SizedBox(height: 30),
-              MenuOption('Movie Date', 'Keep it simple', signOut, 'images/film.png'),
+              MenuOption('Movie Date', 'Keep it simple', toCalendar, 'images/film.png'),
               SizedBox(height: 30),
               MenuOption('Something New', 'Be original', toCalendar, 'images/art.png'),
               SizedBox(height: 30),
-              MenuOption('Ask Your Date', 'Send them a link', toCalendar, 'images/defaultUser.png'),
+              MenuOption('Ask Your Date', 'Send them a link', signOut, 'images/defaultUser.png'),
               SizedBox(height: 50)
             ],)),Positioned(left: 5, top: 35, child: IconButton(icon: Icon(Icons.menu, color: Colors.white, size: 35),
               onPressed: ()=> scaffoldKey.currentState!.openDrawer())),
