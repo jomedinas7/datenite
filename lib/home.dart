@@ -18,10 +18,6 @@ class Home extends StatelessWidget{
   signOut() async {
     print("WOOOO");
     String firstName = globalContext.read<AuthModel>().currentUserFirstName;
-    // List collections = await globalContext.read<AuthModel>().getCollectionList();
-    // for (int i =0; i<collections.length; i++){
-    //   print(collections[0].get('firstName'));
-    // }
     print("____________________________________________");
     print(firstName);
     print("________________________________________");

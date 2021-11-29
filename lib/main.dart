@@ -1,19 +1,11 @@
-import 'package:datenite/Movies/moviesClient.dart';
 import 'package:datenite/sign_up_page.dart';
-import 'dart:math';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqflite.dart';
 import 'sign_up_page.dart';
 import 'home.dart';
-import 'calendar.dart';
 import 'package:firebase_core/firebase_core.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'authentication_service.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 late BuildContext globalContext;
 bool signedIn = false;

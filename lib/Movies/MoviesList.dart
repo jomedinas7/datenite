@@ -1,4 +1,3 @@
-import 'package:date_format/date_format.dart';
 import 'package:datenite/Movies/film.dart';
 import 'package:datenite/Movies/moviesClient.dart';
 import 'package:flutter/cupertino.dart';

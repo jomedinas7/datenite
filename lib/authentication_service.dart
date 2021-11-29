@@ -1,3 +1,4 @@
+import 'package:datenite/calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'main.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'calendar.dart';
 
 class AuthModel extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -31,6 +33,62 @@ class AuthModel extends ChangeNotifier {
         break;
       }
     }
+  }
+
+  Future<void> addAppointment(Appointment appointment) async {
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    var collections = querySnapshot.docs;
+    for (int i = 0; i<collections.length; i++){
+
+      if(collections[i].get('uid') == currentUid){
+        Map aptMap = collections[i].get('Appointments');
+
+        aptMap['appointment${aptMap.length.toString()}'] =
+
+          {'title' : appointment.title,
+            'date' : appointment.date,
+            'type' : appointment.type,
+            'time' : appointment.time,
+            'address' : appointment.address,
+          };
+
+        firestore.collection('users')
+            .doc(collections[i].id)
+            .set({
+          'Appointments': aptMap
+        },SetOptions(merge: true)).then((value){
+        });
+
+        break;
+      }
+    }
+  }
+
+  Future<List> setMarkedMapEvents() async {
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    var collections = querySnapshot.docs;
+    List appointmentList = [];
+    for (int i = 0; i<collections.length; i++){
+      if(collections[i].get('uid') == currentUid){
+        Map aptMap = collections[i].get('Appointments');
+
+        for(var v in aptMap.keys) {
+          DateTime date = DateTime.fromMillisecondsSinceEpoch(aptMap[v]['date'].seconds * 1000);
+          appointmentList.add(
+              Appointment(
+                  aptMap[v]['title'],
+                  date,
+                  aptMap[v]['time'],
+                  aptMap[v]['address'],
+                  aptMap[v]['type'])
+          );
+        }
+
+        return appointmentList;
+
+      }
+    }
+    return appointmentList;
   }
 
 
