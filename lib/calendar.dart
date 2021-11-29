@@ -56,7 +56,7 @@ class _CalendarState extends State<Calendar> {
     userCalendarEvents = await globalContext.read<AuthModel>().setMarkedMapEvents();
   }
 
-  void _showAppointments(DateTime inDate, BuildContext inContext) async {
+  void _showAppointments(DateTime inDate, BuildContext inContext, bool showButton) async {
     showModalBottomSheet(context: inContext,
         builder: (BuildContext inContext) {
           // globalContext.read<AuthModel>().addAppointment(aptList[1]);
@@ -135,7 +135,7 @@ class _CalendarState extends State<Calendar> {
                             )
                         )
                       ,
-                        Container(
+                        if (showButton) Container(
                             height:40,
                             width: 200,
                             child: ElevatedButton(onPressed: (){
@@ -244,6 +244,7 @@ class _CalendarState extends State<Calendar> {
                                       weekdayTextStyle:  TextStyle(
                                         color: Colors.black,
                                       ),
+
                                       customDayBuilder: (
                                           bool isSelectable,
                                           int index,
@@ -255,10 +256,32 @@ class _CalendarState extends State<Calendar> {
                                           bool isThisMonthDay,
                                           DateTime day,
                                           ) {
-                                        if (isSelectedDay) {
-                                          isSelectable = true;
-                                          isSelectedDay = true;
+                                        if(!isSelectable){
+                                          for (int i =0; i<userCalendarEvents.length; i++) {
+                                            if (day.year == userCalendarEvents[i].date.year
+                                            && day.month == userCalendarEvents[i].date.month
+                                            && day.day == userCalendarEvents[i].date.day){
+                                              return Center(
+                                                  child: Material(
+                                                    child: GestureDetector(
+                                                      onTap: () {
+                                                        print("hello");
+                                                        _showAppointments(day, context, false);
+                                                      },
+                                                      child: Container(
+                                                        child: ClipRRect(
+                                                          borderRadius: BorderRadius.circular(20.0),
+                                                          child: Image(image: AssetImage('images/black_heart.png'), height: 20, width: 20),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  )
 
+                                              );
+                                            }
+                                          }
+                                        }
+                                        if (isSelectedDay) {
                                           return Center(
                                             child: Image(image: AssetImage('images/Heart.png'), height: 30, width: 30),
 
@@ -278,8 +301,7 @@ class _CalendarState extends State<Calendar> {
                                       headerMargin: EdgeInsets.fromLTRB(0, 30, 0, 0),
                                       weekDayFormat: WeekdayFormat.narrow,
                                       onDayPressed: (DateTime date, List<Event> events) {
-                                        print("Hello");
-                                        _showAppointments(date, context);
+                                        _showAppointments(date, context, true);
                                         this.setState(() => currentDate = date);
                                         events.forEach((event) => print(event.title));
                                       },

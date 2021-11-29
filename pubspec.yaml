@@ -67,6 +67,7 @@ flutter:
     - images/art.png
     - images/defaultUser.png
     - images/Simu.jpg
+    - images/black_heart.png
   uses-material-design: true
   fonts:
     - family: Typo
