@@ -11,6 +11,11 @@ import 'RestaurantsList.dart';
 var client = RestaurantsClient();
 
 class RestaurantsPage extends StatelessWidget{
+
+  final includesMovie;
+
+  RestaurantsPage(this.includesMovie);
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Restaurant>>(
@@ -29,7 +34,7 @@ class RestaurantsPage extends StatelessWidget{
                                     children:
                                     snapshot.data!.map((restaurant) =>
                                         Column(children: [
-                                          RestaurantButton(restaurant),
+                                          RestaurantButton(restaurant, includesMovie),
                                           SizedBox(height: 20)
                                         ])).toList()
                                 )])),
@@ -54,8 +59,9 @@ class RestaurantsPage extends StatelessWidget{
 class RestaurantButton extends StatelessWidget{
 
   final Restaurant res;
+  final includesMovie;
 
-  const RestaurantButton(this.res);
+  const RestaurantButton(this.res, this.includesMovie);
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +95,7 @@ class RestaurantButton extends StatelessWidget{
                     SizedBox(height: 10),
                     ElevatedButton(onPressed: (){
                       Appointment currentApt = Appointment(restaurant.name, currentDate, '3:00 PM', restaurant.address, 'Food');
-                      Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => DateCreation(currentApt)));
+                      Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => DateCreation(currentApt, includesMovie)));
                     }, child: Text(
                       'Eat Here', style: TextStyle(color: Colors.red[800]),
                     ), style: ButtonStyle(

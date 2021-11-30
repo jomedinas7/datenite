@@ -115,7 +115,7 @@ class _CalendarState extends State<Calendar> {
                                               ]),
                                               subtitle: Text('$apptAddress', style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic)),
                                               onTap: () async {
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment)));
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment, false))); // prevent from going to movies if just editing time for restaurant
                                               })
                                       ),
                                       secondaryActions: [
@@ -144,7 +144,7 @@ class _CalendarState extends State<Calendar> {
                               var res = RestaurantsClient().getRestaurantsByZIP(79912);
                               if(widget.title == 'Dinner + Show') {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => RestaurantsPage()));
+                                    builder: (context) => RestaurantsPage(true)));
                               }
                               if(widget.title == 'Movie Date'){
                                 Navigator.of(context).push(MaterialPageRoute(
