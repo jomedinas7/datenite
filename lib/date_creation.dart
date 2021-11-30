@@ -18,7 +18,7 @@ class DateCreation extends StatefulWidget {
 
   DateCreation(Appointment currentAppointment, toMovie, [newDate]) {
     this.currentAppointment = currentAppointment;
-    if (newDate!=null) {
+    if (newDate!= null) {
       this.newDate = newDate;
     }
     this.toMovie = toMovie;

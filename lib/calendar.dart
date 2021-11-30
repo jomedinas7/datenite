@@ -117,7 +117,7 @@ class _CalendarState extends State<Calendar> {
                                               ]),
                                               subtitle: Text('$apptAddress', style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic)),
                                               onTap: () async {
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment, false))); // prevent from going to movies if just editing time for restaurant
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment, false, false))); // prevent from going to movies if just editing time for restaurant
                                               })
                                       ),
                                       secondaryActions: [
