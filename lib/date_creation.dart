@@ -1,3 +1,4 @@
+import 'package:datenite/Movies/moviesModel.dart';
 import 'package:datenite/calendar.dart';
 import 'package:datenite/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -10,16 +11,17 @@ import 'main.dart';
 
 class DateCreation extends StatefulWidget {
   bool newDate = true;
+  late final toMovie;
   //TODO: update appointment if false
   Appointment currentAppointment =
   Appointment('title',DateTime.now(),'time','address','type');
 
-  DateCreation(Appointment currentAppointment,[newDate]) {
+  DateCreation(Appointment currentAppointment, toMovie, [newDate]) {
     this.currentAppointment = currentAppointment;
     if (newDate!=null) {
       this.newDate = newDate;
     }
-
+    this.toMovie = toMovie;
   }
 
   @override
@@ -118,8 +120,12 @@ class _DateCreationState extends State<DateCreation> {
             print("updating appointment");
             globalContext.read<AuthModel>().updateAppointment(currentAppointment);
           }
-
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => Calendar("My Dates")));
+          if(!widget.toMovie){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Calendar("My Dates")));
+          }
+          if(widget.toMovie){
+            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
+          }
           // _save(context, appointmentsModel);
         },
       )
@@ -129,7 +135,6 @@ class _DateCreationState extends State<DateCreation> {
 
   @override
   Widget build(BuildContext context) {
-          Appointment originalAppointment = currentAppointment;
           return Scaffold(
               bottomNavigationBar: Padding(
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
