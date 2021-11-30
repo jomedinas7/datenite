@@ -106,6 +106,36 @@ class AuthModel extends ChangeNotifier {
     }
   }
 
+
+  Future<void> deleteAppointment(Appointment appointment) async {
+    print("Deleting");
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    var collections = querySnapshot.docs;
+    for (int i = 0; i < collections.length; i++) {
+      if(collections[i].get('uid') == currentUid){
+        Map aptMap = collections[i].get('Appointments');
+        for (var k in aptMap.keys) {
+          if (aptMap[k]['id'] == appointment.id) {
+            print("delete ${appointment.id}");
+            print(aptMap[k]['id']);
+            aptMap[k] = null;
+            aptMap.remove(k);
+            print(aptMap);
+            print(aptMap[k]);
+
+            firestore.collection('users')
+                .doc(collections[i].id)
+                .update({
+              'Appointments': aptMap
+            });
+
+            break;
+          }
+        }
+      }
+    }
+  }
+
   Future<List> setMarkedMapEvents() async {
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
     var collections = querySnapshot.docs;

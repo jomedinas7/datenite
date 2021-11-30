@@ -52,6 +52,7 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
+
   displayToast(){
     Fluttertoast.showToast(msg: 'Selected');
   }
@@ -125,7 +126,9 @@ class _CalendarState extends State<Calendar> {
                                             caption: "Delete",
                                             color: Colors.red,
                                             icon: Icons.delete,
-                                            onTap: () => {}
+                                            onTap: () {
+                                              _deleteAppointment(context,appointment);
+                                            }
                                           // _deleteAppointment(
                                           //     inBuildContext,
                                           //     inModel,
@@ -160,6 +163,40 @@ class _CalendarState extends State<Calendar> {
               )
               )
               )
+          );
+        }
+    );
+  }
+
+  _deleteAppointment(BuildContext context, Appointment appointment) {
+    return showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (alertContext) {
+          return AlertDialog(
+            title: const Text('Delete Appointment'),
+            content: Text('Are you sure you want to delete \'${appointment
+                .title}\''),
+            actions: [
+              TextButton(
+                child: const Text('Cancel'),
+                onPressed: () => Navigator.of(alertContext).pop(),
+              ),
+              TextButton(
+                child: const Text('Delete'),
+                onPressed: () {
+                  globalContext.read<AuthModel>().deleteAppointment(appointment);
+                  Navigator.of(alertContext).pop();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                          backgroundColor: Colors.red,
+                          duration: Duration(seconds: 2),
+                          content: Text('Appointment deleted')
+                      )
+                  );
+                },
+              )
+            ],
           );
         }
     );
