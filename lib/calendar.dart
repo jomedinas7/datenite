@@ -142,7 +142,14 @@ class _CalendarState extends State<Calendar> {
                               //var cines = MoviesClient().getCinemas();
                               //Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
                               var res = RestaurantsClient().getRestaurantsByZIP(79912);
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => RestaurantsPage()));
+                              if(widget.title == 'Dinner + Show') {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => RestaurantsPage()));
+                              }
+                              if(widget.title == 'Movie Date'){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => CinemasPage()));
+                              }
 
                             },child: Text('Let\'s plan!',style: TextStyle(fontSize: 18)),
                                 style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
