@@ -42,14 +42,27 @@ class AuthModel extends ChangeNotifier {
 
       if(collections[i].get('uid') == currentUid){
         Map aptMap = collections[i].get('Appointments');
-
-        aptMap['appointment${aptMap.length.toString()}'] =
+        //TODO: Need to change this from length to
+        //TO-DONE
+        // the next available appointment # for when an item is deleted
+        int nextAvailable = aptMap.length+1;
+        for (int j =1; j<200; j++){
+          if(aptMap['appointment$j']!=null){
+            print("appointment$j");
+          } else {
+            print("Next Available = appointment$j");
+            nextAvailable = j;
+            break;
+          }
+        }
+        aptMap['appointment$nextAvailable'] =
 
           {'title' : appointment.title,
             'date' : appointment.date,
             'type' : appointment.type,
             'time' : appointment.time,
             'address' : appointment.address,
+            'id' : 'appointment$nextAvailable}'
           };
 
         firestore.collection('users')
@@ -60,6 +73,35 @@ class AuthModel extends ChangeNotifier {
         });
 
         break;
+      }
+    }
+  }
+
+  Future<void> updateAppointment(Appointment appointment) async {
+    QuerySnapshot querySnapshot = await firestore.collection("users").get();
+    var collections = querySnapshot.docs;
+    for (int i = 0; i < collections.length; i++) {
+      if(collections[i].get('uid') == currentUid){
+        Map aptMap = collections[i].get('Appointments');
+        for (var k in aptMap.keys) {
+          if (aptMap[k]['id'] == appointment.id) {
+            aptMap[k] =
+            {'title': appointment.title,
+              'date': appointment.date,
+              'type': appointment.type,
+              'time': appointment.time,
+              'address': appointment.address,
+              'id': appointment.id
+            };
+            firestore.collection('users')
+                .doc(collections[i].id)
+                .set({
+              'Appointments': aptMap
+            }, SetOptions(merge: true)).then((value) {});
+
+            break;
+          }
+        }
       }
     }
   }
@@ -80,7 +122,9 @@ class AuthModel extends ChangeNotifier {
                   date,
                   aptMap[v]['time'],
                   aptMap[v]['address'],
-                  aptMap[v]['type'])
+                  aptMap[v]['type'],
+                  aptMap[v]['id']
+              )
           );
         }
 

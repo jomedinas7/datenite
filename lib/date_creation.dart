@@ -2,27 +2,36 @@ import 'package:datenite/calendar.dart';
 import 'package:datenite/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'authentication_service.dart';
+import 'package:provider/provider.dart';
+import 'main.dart';
 
 
 
 class DateCreation extends StatefulWidget {
+  bool newDate = true;
+  //TODO: update appointment if false
   Appointment currentAppointment =
   Appointment('title',DateTime.now(),'time','address','type');
 
-  DateCreation(Appointment currentAppointment) {
+  DateCreation(Appointment currentAppointment,[newDate]) {
     this.currentAppointment = currentAppointment;
+    if (newDate!=null) {
+      this.newDate = newDate;
+    }
+
   }
 
   @override
-  _DateCreationState createState() =>  _DateCreationState(currentAppointment);
+  _DateCreationState createState() =>  _DateCreationState(currentAppointment, newDate);
 }
 class _DateCreationState extends State<DateCreation> {
-
-
+  bool newDate = true;
   final TextEditingController _titleEditingController = TextEditingController();
   final TextEditingController _contentEditingController = TextEditingController();
 
-  _DateCreationState(Appointment currentAppointment) {
+
+  _DateCreationState(Appointment currentAppointment, [newDate]) {
     this.currentAppointment = currentAppointment;
     _titleEditingController.addListener(() {
       currentAppointment.title = _titleEditingController.text;
@@ -30,6 +39,9 @@ class _DateCreationState extends State<DateCreation> {
     _contentEditingController.addListener(() {
       currentAppointment.time  = _contentEditingController.text;
     });
+    if (newDate!=null){
+      this.newDate = newDate;
+    }
   }
 
   Appointment currentAppointment =
@@ -41,13 +53,17 @@ class _DateCreationState extends State<DateCreation> {
     if (picked != null) {
       setState(() {
         print(picked);
-        int hour = 0;
+        int hour = picked.hour;
+        String minute = picked.minute.toString();
         String amPm = 'AM';
         if(picked.hour>12){
           hour = picked.hour - 12;
           amPm = 'PM';
         }
-        currentAppointment.time = "$hour:${picked.minute} $amPm";
+        if(picked.minute<10){
+          minute = '0${picked.minute}';
+        }
+        currentAppointment.time = "$hour:$minute $amPm";
       });
       // setTime(picked.format(context));
     }
@@ -94,6 +110,15 @@ class _DateCreationState extends State<DateCreation> {
       TextButton(
         child: Text('Save'),
         onPressed: () {
+          userCalendarEvents.add(currentAppointment);
+          if(newDate) {
+            print("adding appointment");
+            globalContext.read<AuthModel>().addAppointment(currentAppointment);
+          } else {
+            print("updating appointment");
+            globalContext.read<AuthModel>().updateAppointment(currentAppointment);
+          }
+
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => Calendar("My Dates")));
           // _save(context, appointmentsModel);
         },
@@ -104,6 +129,7 @@ class _DateCreationState extends State<DateCreation> {
 
   @override
   Widget build(BuildContext context) {
+          Appointment originalAppointment = currentAppointment;
           return Scaffold(
               bottomNavigationBar: Padding(
                   padding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),

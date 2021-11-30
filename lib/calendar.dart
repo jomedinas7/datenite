@@ -21,13 +21,17 @@ DateTime currentDate = DateTime.now();
 List userCalendarEvents = [];
 
 class Appointment {
-  Appointment(String title, DateTime date, String time, String address, String type){
+  Appointment(String title, DateTime date, String time, String address, String type, [id]){
     this.title = title;
     this.date = date;
     this.time = time;
     this.address = address;
     this.type = type;
+    if (id!=null){
+      this.id = id;
+    }
   }
+  String id = 'appointment#';
   String title = '';
   DateTime date = DateTime.now();
   String time = '';
@@ -61,8 +65,6 @@ class _CalendarState extends State<Calendar> {
   void _showAppointments(DateTime inDate, BuildContext inContext, bool showButton) async {
     showModalBottomSheet(context: inContext,
         builder: (BuildContext inContext) {
-          // globalContext.read<AuthModel>().addAppointment(aptList[1]);
-
           return Scaffold(
               body: Container(child: Padding(
                   padding: EdgeInsets.all(10), child: GestureDetector(
@@ -115,7 +117,7 @@ class _CalendarState extends State<Calendar> {
                                               ]),
                                               subtitle: Text('$apptAddress', style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic)),
                                               onTap: () async {
-                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment)));
+                                                Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment,false)));
                                               })
                                       ),
                                       secondaryActions: [
