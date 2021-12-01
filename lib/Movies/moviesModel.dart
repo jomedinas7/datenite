@@ -93,7 +93,7 @@ class CinemaButton extends StatelessWidget{
                 crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(cinema.name, style: TextStyle(color: Colors.white, fontSize: 25,
+                  Text(cinema.name, style: TextStyle(color: Colors.white, fontSize: 20,
                       fontWeight: FontWeight.bold)),
                   Text(cinema.address, style: TextStyle(color: Colors.white,fontSize: 15))
                 ],))

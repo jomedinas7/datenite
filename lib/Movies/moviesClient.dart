@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:datenite/calendar.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'cinema.dart';
@@ -14,12 +15,12 @@ class MoviesClient{
 
   Map<String,String> get headers =>{
     "client": "NONE_78",
-    "x-api-key": "wWKfWC6IO51Wi8jeNEsSW7MI0oo0I53246whJrGc",
-    "authorization": "Basic Tk9ORV83OF9YWDpVbGpJTmVoVDRyTWE=",
-    "territory": "XX",
+    "x-api-key": "mx3jlKFMml9o4ojHkZTQn60Vv3owq6Xc8TGqkgLH",
+    "authorization": "Basic Tk9ORV83ODpFUVZHaXN1S0gxQ3A=",
+    "territory": "US",
     "api-version": "v200",
-    "geolocation": "-22.0;14.0",
-    "device-datetime": DateTime.now().toIso8601String(),
+    "geolocation": "31.772543;-106.460953",
+    "device-datetime": currentDate.toIso8601String(),
   };
 
 

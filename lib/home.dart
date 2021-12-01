@@ -244,7 +244,9 @@ class MessageScreen extends StatelessWidget{
             Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
                 onPressed: (){
                   Navigator.pop(context);
-                  controller.dispose();
+                  // if(this.controller.value != '') {
+                  //   controller.dispose();
+                  // }
         }))]
         ));
   }
