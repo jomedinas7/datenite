@@ -63,6 +63,38 @@ Widget createProfileTopBar(){
   );
 }
 
+Widget theaterTopContainer(title,context){
+  return Container(
+      padding: EdgeInsets.fromLTRB(0,70,0,0),
+      decoration: BoxDecoration(
+          color: Colors.red[800],
+          borderRadius: BorderRadius.all(Radius.circular(20))),
+      height: 225,
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(child: Text(title,
+                        style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 32))),
+                    SizedBox(height: 8),
+                    Container(child: Text('When\'s the date?',
+                        style: TextStyle(color: Colors.white, fontSize: 22))),
+                  ]),
+            ),
+            ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(builder: (context) => Calendar("My Dates")));
+                  },
+                child: Text("Back to Calendar"))
+          ]
+      )
+  );
+}
+
 
 Widget calendarWidget(){
   EventList<Event> markedDateMap = EventList<Event>(

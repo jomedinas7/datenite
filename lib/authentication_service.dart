@@ -13,7 +13,7 @@ class AuthModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool get isSignedIn => _auth.currentUser != null;
   User? get currentUser => _auth.currentUser;
-  String currentUserFirstName = "Persephone";
+  String currentUserFirstName = "User";
   String? get currentUid => _auth.currentUser!.uid;
   List get currentUserInfo => [_auth.currentUser!.uid, _auth.currentUser!.displayName];
   // var get currentUserName => _auth.currentUser!.firstName;
@@ -62,7 +62,8 @@ class AuthModel extends ChangeNotifier {
             'type' : appointment.type,
             'time' : appointment.time,
             'address' : appointment.address,
-            'id' : 'appointment$nextAvailable}'
+            'id' : 'appointment$nextAvailable',
+            'image' : appointment.image
           };
 
         firestore.collection('users')
@@ -80,10 +81,14 @@ class AuthModel extends ChangeNotifier {
   Future<void> updateAppointment(Appointment appointment) async {
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
     var collections = querySnapshot.docs;
+    print("Enter Method");
     for (int i = 0; i < collections.length; i++) {
       if(collections[i].get('uid') == currentUid){
         Map aptMap = collections[i].get('Appointments');
         for (var k in aptMap.keys) {
+          // print(k);
+          print(appointment.id);
+          print(appointment.title);
           if (aptMap[k]['id'] == appointment.id) {
             aptMap[k] =
             {'title': appointment.title,
@@ -91,8 +96,11 @@ class AuthModel extends ChangeNotifier {
               'type': appointment.type,
               'time': appointment.time,
               'address': appointment.address,
-              'id': appointment.id
+              'id': appointment.id,
+              'image' : appointment.image
             };
+            print(appointment.title);
+            print("PLEASE");
             firestore.collection('users')
                 .doc(collections[i].id)
                 .set({
@@ -104,6 +112,7 @@ class AuthModel extends ChangeNotifier {
         }
       }
     }
+    print("EXIT METHOD");
   }
 
 
@@ -153,7 +162,8 @@ class AuthModel extends ChangeNotifier {
                   aptMap[v]['time'],
                   aptMap[v]['address'],
                   aptMap[v]['type'],
-                  aptMap[v]['id']
+                  aptMap[v]['id'],
+                  aptMap[v]['image']
               )
           );
         }

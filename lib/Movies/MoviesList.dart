@@ -1,14 +1,22 @@
 import 'package:datenite/Movies/film.dart';
 import 'package:datenite/Movies/moviesClient.dart';
+import 'package:datenite/date_creation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets.dart';
+import 'package:datenite/calendar.dart';
+import 'package:datenite/date_creation.dart';
 import 'moviesModel.dart';
 
 class MoviesList extends StatelessWidget{
+  bool newDate = true;
 
-  MoviesList(MoviesClient client);
+  MoviesList(MoviesClient client, [newDate]){
+    if (newDate!=null){
+      this.newDate = newDate;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,7 @@ class MoviesList extends StatelessWidget{
                                     children:
                                     snapshot.data!.map((film) =>
                                         Column(children: [
-                                          FilmButton(film, context),
+                                          FilmButton(film, context, newDate),
                                           SizedBox(height: 20)
                                         ])).toList()
                                 )])),
@@ -57,8 +65,13 @@ class FilmButton extends StatelessWidget{
 
   final Film film;
   final parentContext;
+  bool newDate = true;
 
-  const FilmButton(this.film, this.parentContext);
+  FilmButton(this.film, this.parentContext, [newDate]){
+    if (newDate!=null){
+      this.newDate = newDate;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +112,23 @@ class FilmButton extends StatelessWidget{
                       itemCount: film.showtimes.length,
                       itemBuilder: (BuildContext context, int index) {
                         return ElevatedButton(
-                          onPressed: () { print('okay');},
+                          onPressed: () {
+                            print('okay');
+                            print('${film.showtimes[index]}');
+                            print(film.posterUrl);
+                            String address = client.cinema.address.toString() +
+                                ' ' + client.cinema.city.toString() +
+                                ', ' + client.cinema.state.toString();
+                            Appointment currentApt = Appointment(film.name, currentDate, film.showtimes[index], address, 'Movie',null, film.posterUrl);
+                            if (newDate == false){
+                              Appointment currentApt = Appointment(film.name, currentDate, film.showtimes[index], address, 'Movie', currentAptId, film.posterUrl);
+                            }
+                            print("FOURTH CALL_________");
+                            print(currentAptId);
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(currentApt, false, newDate)));
+
+
+                          },
                           style: ButtonStyle(
                           fixedSize: MaterialStateProperty.all<Size>(Size(95,40)),
                           backgroundColor: MaterialStateProperty.all<Color>(Colors.white as Color)),

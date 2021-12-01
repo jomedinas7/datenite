@@ -1,5 +1,6 @@
 import 'package:datenite/Movies/MoviesList.dart';
 import 'package:datenite/Movies/moviesClient.dart';
+import 'package:datenite/date_creation.dart';
 import 'package:datenite/home.dart';
 import 'package:datenite/main.dart';
 import 'package:datenite/widgets.dart';
@@ -11,8 +12,12 @@ var client = MoviesClient();
 
 
 class CinemasPage extends StatelessWidget{
-  
-
+  bool newDate = true;
+  CinemasPage([newDate]){
+    if (newDate!=null) {
+      this.newDate = newDate;
+    }
+  }
   printID(Cinema cine){
     print(cine.id);
   }
@@ -29,13 +34,13 @@ class CinemasPage extends StatelessWidget{
                      SingleChildScrollView(
                        child: Column(
                            children: [
-                             calendarTopContainer('Theaters Near You', context),
+                             theaterTopContainer('Theaters Near You', context),
                              SizedBox(height: 20),
                              Column(
                               children:
                                 snapshot.data!.map((cinema) =>
                                   Column(children: [
-                                  CinemaButton(cinema),
+                                  CinemaButton(cinema, newDate),
                                   SizedBox(height: 20)
                                 ])).toList()
            )])),
@@ -60,8 +65,13 @@ class CinemasPage extends StatelessWidget{
 class CinemaButton extends StatelessWidget{
 
   final Cinema cine;
+  bool newDate = true;
 
-  const CinemaButton(this.cine);
+  CinemaButton(this.cine, [newDate]){
+    if (newDate!=null){
+      this.newDate = newDate;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,8 +105,13 @@ class CinemaButton extends StatelessWidget{
         )),
         onPressed: () {
           client.cinemaId = cinema.id;
+          client.cinema = cinema;
           print(cinema.id);
-          Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => MoviesList(client)));
+          print('________NEW DATE_______');
+          print(newDate);
+          print("THIIIIRRRRD CALL_________");
+          print(currentAptId);
+          Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => MoviesList(client,newDate)));
         },);
   }
 
