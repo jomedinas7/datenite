@@ -8,7 +8,7 @@ import 'package:provider/provider.dart';
 import 'main.dart';
 
 
-
+String currentAptId = '';
 class DateCreation extends StatefulWidget {
   bool newDate = true;
   late final toMovie;
@@ -112,12 +112,18 @@ class _DateCreationState extends State<DateCreation> {
       TextButton(
         child: Text('Save'),
         onPressed: () {
-          userCalendarEvents.add(currentAppointment);
           if(newDate) {
+            userCalendarEvents.add(currentAppointment);
             print("adding appointment");
             globalContext.read<AuthModel>().addAppointment(currentAppointment);
           } else {
             print("updating appointment");
+            print("FIFTH CALL_________");
+            if (currentAppointment.id == 'appointment#'){
+              currentAppointment.id = currentAptId;
+            }
+            print(currentAptId);
+            print(currentAppointment.id);
             globalContext.read<AuthModel>().updateAppointment(currentAppointment);
           }
           if(!widget.toMovie){
@@ -144,10 +150,10 @@ class _DateCreationState extends State<DateCreation> {
                 SingleChildScrollView(
                     child: Column(
                         children: [
-                          dateCreationTop(currentAppointment.title,currentAppointment.address,context),
+                          dateCreationTop(currentAppointment.title,currentAppointment.address.toString(),context),
                           SizedBox(height: 400, child:
                               ListView(children: [
-                                Container(
+                                if (currentAppointment.type != 'Movie') Container(
                                   decoration: BoxDecoration(
                                       color: Colors.red[400],
                                       borderRadius: BorderRadius.circular(8),
@@ -173,8 +179,52 @@ class _DateCreationState extends State<DateCreation> {
                                             )
                                         ),
                               ),
+                                if (currentAppointment.type == 'Movie')
+                                  Text('TIME: ${currentAppointment.time}',style:TextStyle(fontWeight: FontWeight.bold)),
+                                if (currentAppointment.type == 'Movie')
+                                  Text('DATE:  ${currentAppointment.date.toString().substring(0,10)}', style:TextStyle(fontWeight: FontWeight.bold)),
+
+                                if (currentAppointment.type == 'Movie')
+                                  Image(height: 200,image: NetworkImage(currentAppointment.image)),
+
+                                if (currentAppointment.type == 'Movie') Container(
+                                    height:40,
+                                    width: 200,
+                                    child: Padding(
+                                    padding: EdgeInsets.only(right: 40, left:40),
+
+                                    child: ElevatedButton(onPressed: (){
+                                      if (newDate == false){
+                                        currentAptId = currentAppointment.id;
+                                        print("SECOND CALL ______________________________");
+                                        print(currentAppointment.id);
+                                        Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage(false)));
+                                      } else {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    CinemasPage()));
+                                      }
+
+                                    },child: Text('Choose a new showtime',style: TextStyle(fontSize: 18)),
+                                        style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
+                                )
+                                ),
+                                  // Container(
+                                  //   height:40,
+                                  //   width: 100,
+                                  //   child:
+                                  //   ElevatedButton(onPressed: (){},
+                                  //
+                                  //     child: Text('Change Movie Time'),
+                                  //     style: ButtonStyle(
+                                  //         backgroundColor: MaterialStateProperty.all(Colors.red[700])
+                                  //     )
+                                  //   )
+                                  // ),
+
                               SizedBox(height: 20,),
-                              Container(
+                                if (currentAppointment.type != 'Movie') Container(
                                 decoration: BoxDecoration(
                                     color: Colors.red[400],
                                     borderRadius: BorderRadius.circular(8),

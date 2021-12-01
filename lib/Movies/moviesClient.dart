@@ -9,6 +9,7 @@ class MoviesClient{
   var location = new Location();
   var cinemaId;
   late Film film;
+  var cinema;
   /* These are the testing credentials, they don't show nearby data yet
   When we know everything works we can swap them for the real credentials
   The real credentials only have ~70 requests left, testing have 10,000 */

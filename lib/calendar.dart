@@ -16,12 +16,18 @@ import 'main.dart';
 import 'package:provider/provider.dart';
 import 'authentication_service.dart';
 import 'date_creation.dart';
+import 'home.dart';
+
+//TODONE: make sure to push movie date when creating a movie
+//TODO: make sure edit on movies will update properly
+//TODONE: add functionality to choose a new showtime button
+
 
 DateTime currentDate = DateTime.now();
 List userCalendarEvents = [];
 
 class Appointment {
-  Appointment(String title, DateTime date, String time, String address, String type, [id]){
+  Appointment(String title, DateTime date, String time, String address, String type, [id, String image = '']){
     this.title = title;
     this.date = date;
     this.time = time;
@@ -30,7 +36,11 @@ class Appointment {
     if (id!=null){
       this.id = id;
     }
+    if (image!=''){
+      this.image = image;
+    }
   }
+  String image = '';
   String id = 'appointment#';
   String title = '';
   DateTime date = DateTime.now();
@@ -40,7 +50,7 @@ class Appointment {
   bool hasTime() => time != '';
 }
 
-List<Appointment> aptList = [Appointment("Raiders of the Lost Ark", DateTime.now(), "2:30 PM", "12704 Montana Ave, El Paso, TX 79938", "Movie"), Appointment("Olive Garden", DateTime.now(), "4:30 PM", "300 Mesa St, El Paso, TX 79902","Food"),];
+// List<Appointment> aptList = [Appointment("Raiders of the Lost Ark", DateTime.now(), "2:30 PM", "12704 Montana Ave, El Paso, TX 79938", "Movie"), Appointment("Olive Garden", DateTime.now(), "4:30 PM", "300 Mesa St, El Paso, TX 79902","Food"),];
 
 class Calendar extends StatefulWidget {
 
@@ -110,7 +120,7 @@ class _CalendarState extends State<Calendar> {
                                       child: Container(
                                           margin: EdgeInsets.only(
                                               bottom: 8),
-                                          color: apptType == "Movies" ? Colors.red[200] : Colors.purple[100],
+                                          color: apptType == "Movie" ? Colors.red[200] : Colors.purple[100],
                                           child: ListTile(
                                               title: Row(children: [
                                                 Text("${appointment.title} "),
@@ -118,6 +128,8 @@ class _CalendarState extends State<Calendar> {
                                               ]),
                                               subtitle: Text('$apptAddress', style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic)),
                                               onTap: () async {
+                                                print("VERY FIRST CALL______________________________________________");
+                                                print(appointment.id);
                                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment, false, false))); // prevent from going to movies if just editing time for restaurant
                                               })
                                       ),
@@ -129,10 +141,6 @@ class _CalendarState extends State<Calendar> {
                                             onTap: () {
                                               _deleteAppointment(context,appointment);
                                             }
-                                          // _deleteAppointment(
-                                          //     inBuildContext,
-                                          //     inModel,
-                                          //     appointment)
                                         )
                                       ]
                                   );
@@ -151,7 +159,10 @@ class _CalendarState extends State<Calendar> {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => RestaurantsPage(true)));
                               }
-                              if(widget.title == 'Movie Date'){
+                              else if(widget.title == 'Movie Date'){
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => CinemasPage()));
+                              } else {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => CinemasPage()));
                               }
@@ -222,8 +233,9 @@ class _CalendarState extends State<Calendar> {
       }
     );
 
-    setMarkedMap();
+
     markedDateMap.clear();
+    setMarkedMap();
 
     for (int i =0; i<userCalendarEvents.length; i++) {
       Color color = Colors.red;
@@ -368,8 +380,18 @@ class _CalendarState extends State<Calendar> {
                     ]
                   )
               ),
-              Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
-                  onPressed: ()=> Navigator.pop(context))),
+              if (widget.title != "My Dates") Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }
+                  )),
+              if (widget.title == "My Dates") Positioned(left: -8, top: 55,
+                  child: IconButton(icon:
+                  Icon(Icons.menu, color: Colors.white, size: 55),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
+                  }
+              )),
             ],
         ),
     );
