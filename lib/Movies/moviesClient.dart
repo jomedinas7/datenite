@@ -3,9 +3,10 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'cinema.dart';
 import 'film.dart';
-
+import 'package:location/location.dart';
 
 class MoviesClient{
+  var location = new Location();
   var cinemaId;
   late Film film;
   /* These are the testing credentials, they don't show nearby data yet
@@ -22,6 +23,10 @@ class MoviesClient{
     "device-datetime": DateTime.now().toIso8601String(),
   };
 
+
+  getGeolocation() async {
+    var serviceEnabled= await location.serviceEnabled();
+  }
 
   getFilmInfo(id) async {
     var url = "https://api-gate2.movieglu.com/filmDetails/?film_id=$id";
