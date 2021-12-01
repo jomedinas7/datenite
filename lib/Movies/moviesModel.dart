@@ -2,6 +2,7 @@ import 'package:datenite/Movies/MoviesList.dart';
 import 'package:datenite/Movies/moviesClient.dart';
 import 'package:datenite/date_creation.dart';
 import 'package:datenite/home.dart';
+import 'package:datenite/locationClient.dart';
 import 'package:datenite/main.dart';
 import 'package:datenite/widgets.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,6 +25,8 @@ class CinemasPage extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
+    var locClient = new LocationClient();
+    var loc = locClient.getGeolocation();
     return FutureBuilder<List<Cinema>>(
         future: client.getCinemas(),
         builder: (context, AsyncSnapshot<List<Cinema>> snapshot) {

@@ -1,13 +1,38 @@
+import 'package:datenite/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'calendar.dart';
 import 'main.dart';
 import 'package:provider/provider.dart';
 import 'authentication_service.dart';
+import 'package:flutter_sms/flutter_sms.dart';
+
+
 
 toCalendar(title){
   Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => Calendar(title)));
+}
+
+toMessage() async {
+  var status = await Permission.sms.status;
+  await Permission.sms.shouldShowRequestRationale;
+  if(status.isDenied){
+    status = await Permission.sms.request();
+    if(await status.isGranted){
+      Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => MessageScreen()));
+    }
+    else{
+      Fluttertoast.showToast(msg: "SMS Permissions must be enabled to access this feature.",
+      gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.black,
+        textColor: CupertinoColors.white
+      );
+    }
+  }else{
+    Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => MessageScreen()));
+  }
 }
 
 class Home extends StatelessWidget{
@@ -49,11 +74,10 @@ class Home extends StatelessWidget{
                 decoration: BoxDecoration(
                   color: Colors.red,
                 ),
-                child: Text('Drawer Header')),
+                child: Text('Menu')),
             ListTile(
-              title: const Text('Item 1'),
-              onTap: (){
-              },
+              title: const Text('Sign Out'),
+              onTap: () => signOut(),
             )
           ],
         ),
@@ -99,12 +123,13 @@ class Home extends StatelessWidget{
               SizedBox(height: 30),
               MenuOption('Something New', 'Be original', toCalendar, 'images/art.png'),
               SizedBox(height: 30),
-              MenuOption('Ask Your Date', 'Send them a link', signOut, 'images/defaultUser.png'),
+              MenuOption('Ask Your Date', 'Send them a link', toMessage, 'images/defaultUser.png'),
               SizedBox(height: 50)
             ],)),Positioned(left: 5, top: 35, child: IconButton(icon: Icon(Icons.menu, color: Colors.white, size: 35),
               onPressed: ()=> scaffoldKey.currentState!.openDrawer())),
         ]));
   }
+
 }
 
 
@@ -156,5 +181,71 @@ class MenuOption extends StatelessWidget{
       else{f();}
       },
     );
+  }
+}
+
+class MessageScreen extends StatelessWidget{
+
+  final _numberKey = GlobalKey<FormState>();
+  final controller = TextEditingController();
+
+  void _sendSMS(String message, List<String> recipents) async {
+    String _result = await sendSMS(message: message, recipients: recipents)
+        .catchError((onError) {
+      print(onError);
+    });
+    print(_result);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Stack(
+            children: [
+              SingleChildScrollView(
+                  child: Column(
+                      children: [
+                        calendarTopContainer('Ask Your Date', context),
+                        SizedBox(height: 20),
+                        Column(
+                            children: [
+                              SizedBox(height: 50),
+                              Padding(padding: EdgeInsets.all(20), child:
+                              TextFormField(
+                                controller: controller,
+                                key: this._numberKey,
+                                cursorColor: Colors.red,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                    hintText: "(555)-555-5555",
+                                    label: Text("Phone Number"),
+                                    enabledBorder: OutlineInputBorder(
+                                        borderRadius:BorderRadius.circular(10.0),
+                                      borderSide: BorderSide(color: Colors.red, width: 2)
+                                    )
+                                ),
+                                validator: (value) {
+                                  if (value!.isEmpty) {
+                                    return 'This field cannot be left empty';
+                                  }
+                                },
+                              )),
+                              SizedBox(height: 50),
+                              ElevatedButton(onPressed: (){_sendSMS('Hey, let\'s plan a date on DateNite.'
+                                  ' https://play.google.com/store/apps/details?id=com.chickfila.cfaflagship&hl=en_US&gl=US', [controller.text.toString()]);},
+                                  child: Text('Send'),
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(Colors.red[800]),
+                                  fixedSize: MaterialStateProperty.all(Size(200, 50))
+                                  ) ,)
+                            ]
+                        ),])
+    ),
+            Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
+                onPressed: (){
+                  Navigator.pop(context);
+                  controller.dispose();
+        }))]
+        ));
   }
 }

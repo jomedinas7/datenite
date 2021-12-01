@@ -81,7 +81,7 @@ Widget theaterTopContainer(title,context){
                     Container(child: Text(title,
                         style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold, fontSize: 32))),
                     SizedBox(height: 8),
-                    Container(child: Text('When\'s the date?',
+                    Container(child: Text('Select a Theater',
                         style: TextStyle(color: Colors.white, fontSize: 22))),
                   ]),
             ),
