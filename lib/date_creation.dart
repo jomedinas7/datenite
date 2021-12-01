@@ -12,7 +12,6 @@ String currentAptId = '';
 class DateCreation extends StatefulWidget {
   bool newDate = true;
   late final toMovie;
-  //TODO: update appointment if false
   Appointment currentAppointment =
   Appointment('title',DateTime.now(),'time','address','type');
 
@@ -31,15 +30,26 @@ class _DateCreationState extends State<DateCreation> {
   bool newDate = true;
   final TextEditingController _titleEditingController = TextEditingController();
   final TextEditingController _contentEditingController = TextEditingController();
+  final TextEditingController _addressEditingController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
+
 
 
   _DateCreationState(Appointment currentAppointment, [newDate]) {
+
+
     this.currentAppointment = currentAppointment;
+    _addressEditingController.text = currentAppointment.address;
+    _titleEditingController.text = currentAppointment.title;
+
     _titleEditingController.addListener(() {
       currentAppointment.title = _titleEditingController.text;
     });
     _contentEditingController.addListener(() {
       currentAppointment.time  = _contentEditingController.text;
+    });
+    _addressEditingController.addListener(() {
+      currentAppointment.address = _addressEditingController.text;
     });
     if (newDate!=null){
       this.newDate = newDate;
@@ -112,27 +122,41 @@ class _DateCreationState extends State<DateCreation> {
       TextButton(
         child: Text('Save'),
         onPressed: () {
-          if(newDate) {
-            userCalendarEvents.add(currentAppointment);
-            print("adding appointment");
-            globalContext.read<AuthModel>().addAppointment(currentAppointment);
-          } else {
-            print("updating appointment");
-            print("FIFTH CALL_________");
-            if (currentAppointment.id == 'appointment#'){
-              currentAppointment.id = currentAptId;
+          bool valid = true;
+          if (currentAppointment.type == "Custom") {
+            final form = formKey.currentState!;
+            bool valid = form.validate();
+            currentAppointment.title = _titleEditingController.text;
+            currentAppointment.address = _addressEditingController.text;
+            print("************************");
+            print(currentAppointment.title);
+          }
+
+          if (valid) {
+            if (newDate) {
+              userCalendarEvents.add(currentAppointment);
+              print("adding appointment");
+              globalContext.read<AuthModel>().addAppointment(
+                  currentAppointment);
+            } else {
+              print("updating appointment");
+              if (currentAppointment.id == 'appointment#') {
+                currentAppointment.id = currentAptId;
+              }
+              print(currentAptId);
+              print(currentAppointment.id);
+              globalContext.read<AuthModel>().updateAppointment(
+                  currentAppointment);
             }
-            print(currentAptId);
-            print(currentAppointment.id);
-            globalContext.read<AuthModel>().updateAppointment(currentAppointment);
+            if (!widget.toMovie) {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => Calendar("My Dates")));
+            }
+            if (widget.toMovie) {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => CinemasPage()));
+            }
           }
-          if(!widget.toMovie){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => Calendar("My Dates")));
-          }
-          if(widget.toMovie){
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
-          }
-          // _save(context, appointmentsModel);
         },
       )
     ]
@@ -150,9 +174,39 @@ class _DateCreationState extends State<DateCreation> {
                 SingleChildScrollView(
                     child: Column(
                         children: [
-                          dateCreationTop(currentAppointment.title,currentAppointment.address.toString(),context),
-                          SizedBox(height: 400, child:
+                          dateCreationTop(currentAppointment.title,currentAppointment.address,context),
+                          SizedBox(height: 500, child:
                               ListView(children: [
+                                if (currentAppointment.type == 'Custom')
+                                  Form(
+                                  key: formKey,
+                                  child:
+                                  Column(children: [
+                                    Container(
+                                      height:75,
+                                  decoration: BoxDecoration(
+                                      color: Colors.red[400],
+                                      borderRadius: BorderRadius.circular(8),
+                                      border: Border.all(color: Colors.black)),
+                                  margin:
+                                  EdgeInsets.only(bottom: 6, left: 10, right:10),
+                                  child: buildTextField("Activity",
+                                      currentAppointment.title, false, _titleEditingController),
+                                ),
+                                    Container(
+                                      height:75,
+                                      decoration: BoxDecoration(
+                                          color: Colors.red[400],
+                                          borderRadius: BorderRadius.circular(8),
+                                          border: Border.all(color: Colors.black)),
+                                      margin:
+                                      EdgeInsets.only(bottom: 6, left: 10, right:10),
+                                      child: buildTextField("Address",
+                                          currentAppointment.address, false, _addressEditingController),
+                                    ),
+                                ]
+                              )
+                              ),
                                 if (currentAppointment.type != 'Movie') Container(
                                   decoration: BoxDecoration(
                                       color: Colors.red[400],
@@ -210,20 +264,8 @@ class _DateCreationState extends State<DateCreation> {
                                         style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
                                 )
                                 ),
-                                  // Container(
-                                  //   height:40,
-                                  //   width: 100,
-                                  //   child:
-                                  //   ElevatedButton(onPressed: (){},
-                                  //
-                                  //     child: Text('Change Movie Time'),
-                                  //     style: ButtonStyle(
-                                  //         backgroundColor: MaterialStateProperty.all(Colors.red[700])
-                                  //     )
-                                  //   )
-                                  // ),
 
-                              SizedBox(height: 20,),
+                                if (currentAppointment.type != 'Custom') SizedBox(height: 20,),
                                 if (currentAppointment.type != 'Movie') Container(
                                 decoration: BoxDecoration(
                                     color: Colors.red[400],
@@ -258,5 +300,39 @@ class _DateCreationState extends State<DateCreation> {
                 ]
               )
           );
+  }
+
+  Widget buildTextField(
+      String labelText, String placeholder,
+      bool isPasswordTextField, TextEditingController controller) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 35.0),
+      child: TextFormField(
+        validator: (value) {
+          if (value != null && value.length<1) {
+            return 'Enter Something';
+          }
+        },
+        style: TextStyle(color: Colors.white),
+        controller: controller,
+        decoration: InputDecoration(
+            errorStyle: TextStyle(color: Colors.white),
+            contentPadding: EdgeInsets.only(bottom: 3),
+            labelText: labelText,
+            labelStyle: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
+            floatingLabelBehavior: FloatingLabelBehavior.always,
+
+            //hintText: placeholder,
+            hintStyle: TextStyle(
+              fontSize: 16,
+              // fontWeight: FontWeight.bold,
+              color: Color(Colors.red[100]!.value),
+            )),
+      ),
+    );
   }
 }

@@ -196,7 +196,8 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget buildTextField(
-      String labelText, String placeholder, bool isPasswordTextField, TextEditingController controller) {
+      String labelText, String placeholder,
+      bool isPasswordTextField, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextFormField(

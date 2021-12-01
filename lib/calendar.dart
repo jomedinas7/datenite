@@ -19,8 +19,10 @@ import 'date_creation.dart';
 import 'home.dart';
 
 //TODONE: make sure to push movie date when creating a movie
-//TODO: make sure edit on movies will update properly
+//TODONE: make sure edit on movies will update properly
 //TODONE: add functionality to choose a new showtime button
+//TODO: pass an appointment to something new page and change what's displayed
+// based on the type of appointment
 
 
 DateTime currentDate = DateTime.now();
@@ -49,8 +51,6 @@ class Appointment {
   String type = '';
   bool hasTime() => time != '';
 }
-
-// List<Appointment> aptList = [Appointment("Raiders of the Lost Ark", DateTime.now(), "2:30 PM", "12704 Montana Ave, El Paso, TX 79938", "Movie"), Appointment("Olive Garden", DateTime.now(), "4:30 PM", "300 Mesa St, El Paso, TX 79902","Food"),];
 
 class Calendar extends StatefulWidget {
 
@@ -103,16 +103,6 @@ class _CalendarState extends State<Calendar> {
                                   String apptTime = appointment.time;
                                   String apptAddress = appointment.address;
                                   String apptType = appointment.type;
-                                  // if (appointment.time != '') {
-                                  //   List timeParts = appointment.time
-                                  //       .split(",");
-                                  //   TimeOfDay at = TimeOfDay(
-                                  //       hour: int.parse(timeParts[0]),
-                                  //       minute: int.parse(
-                                  //           timeParts[1]));
-                                  //   apptTime =
-                                  //   " (${at.format(inContext)})";
-                                  // }
 
                                   return Slidable(
                                       actionPane: const SlidableDrawerActionPane(),
@@ -150,8 +140,44 @@ class _CalendarState extends State<Calendar> {
                       ,
                         if (showButton) Container(
                             height:40,
-                            width: 200,
-                            child: ElevatedButton(onPressed: (){
+                            width: 600,
+                            child: Row(children: [
+
+                              if(widget.title=='My Dates') SizedBox(width:25),
+                              if(widget.title=='My Dates') ElevatedButton(
+                                onPressed: (){
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => RestaurantsPage(true)));
+                                },
+                                child:Text('Dinner+Show'),
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(Colors.red[700]),)
+                              ),
+                              if(widget.title=='My Dates') ElevatedButton(
+                                onPressed: (){
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => CinemasPage()));
+                                },
+                                child:Text('Movies'),
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(Colors.red[700]),)
+                              ),
+                              if(widget.title=='My Dates') ElevatedButton(
+                                onPressed: (){
+                                  Appointment somethingNewApt = Appointment('Custom Date', currentDate, "3:00 PM", 'Custom Address', 'Custom');
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => DateCreation(somethingNewApt, false)));
+                                },
+          style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all(Colors.red[700]),),
+                                child:Text('Something New'),
+                             ),
+                              if(widget.title!='My Dates') SizedBox(width:90),
+                              if(widget.title!='My Dates')
+                              Center(child:
+                                  SizedBox(width:200, child:
+                              ElevatedButton(
+                                  onPressed: (){
                               //var cines = MoviesClient().getCinemas();
                               //Navigator.of(context).push(MaterialPageRoute(builder: (context) => CinemasPage()));
                               var res = RestaurantsClient().getRestaurantsByZIP(79912);
@@ -162,14 +188,26 @@ class _CalendarState extends State<Calendar> {
                               else if(widget.title == 'Movie Date'){
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => CinemasPage()));
+                              }
+                              else if (widget.title == 'Something New'){
+                                Appointment somethingNewApt = Appointment('Custom Date', currentDate, "3:00 PM", 'Custom Address', 'Custom');
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => DateCreation(somethingNewApt, false)));
                               } else {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) => CinemasPage()));
                               }
 
                             },child: Text('Let\'s plan!',style: TextStyle(fontSize: 18)),
-                                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red[700])))
-                        )]
+                                style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(Colors.red[700]),
+                                ))
+                                  )
+                              )
+                            ]
+                            )
+
+                      )]
                   )
               )
               )
