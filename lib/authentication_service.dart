@@ -25,6 +25,8 @@ class AuthModel extends ChangeNotifier {
   }
 
   Future<void> setFirstNameFromCollection() async {
+    print(_auth.currentUser.toString());
+    print("___________________");
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
     var collections = querySnapshot.docs;
     for (int i = 0; i<collections.length; i++){
@@ -48,7 +50,7 @@ class AuthModel extends ChangeNotifier {
         int nextAvailable = aptMap.length+1;
         for (int j =1; j<200; j++){
           if(aptMap['appointment$j']!=null){
-            print("appointment$j");
+            // print("appointment$j");
           } else {
             print("Next Available = appointment$j");
             nextAvailable = j;
@@ -81,14 +83,10 @@ class AuthModel extends ChangeNotifier {
   Future<void> updateAppointment(Appointment appointment) async {
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
     var collections = querySnapshot.docs;
-    print("Enter Method");
     for (int i = 0; i < collections.length; i++) {
       if(collections[i].get('uid') == currentUid){
         Map aptMap = collections[i].get('Appointments');
         for (var k in aptMap.keys) {
-          // print(k);
-          print(appointment.id);
-          print(appointment.title);
           if (aptMap[k]['id'] == appointment.id) {
             aptMap[k] =
             {'title': appointment.title,
@@ -99,8 +97,6 @@ class AuthModel extends ChangeNotifier {
               'id': appointment.id,
               'image' : appointment.image
             };
-            print(appointment.title);
-            print("PLEASE");
             firestore.collection('users')
                 .doc(collections[i].id)
                 .set({
@@ -112,12 +108,10 @@ class AuthModel extends ChangeNotifier {
         }
       }
     }
-    print("EXIT METHOD");
   }
 
 
   Future<void> deleteAppointment(Appointment appointment) async {
-    print("Deleting");
     QuerySnapshot querySnapshot = await firestore.collection("users").get();
     var collections = querySnapshot.docs;
     for (int i = 0; i < collections.length; i++) {
@@ -125,13 +119,8 @@ class AuthModel extends ChangeNotifier {
         Map aptMap = collections[i].get('Appointments');
         for (var k in aptMap.keys) {
           if (aptMap[k]['id'] == appointment.id) {
-            print("delete ${appointment.id}");
-            print(aptMap[k]['id']);
             aptMap[k] = null;
             aptMap.remove(k);
-            print(aptMap);
-            print(aptMap[k]);
-
             firestore.collection('users')
                 .doc(collections[i].id)
                 .update({
@@ -151,6 +140,13 @@ class AuthModel extends ChangeNotifier {
     List appointmentList = [];
     for (int i = 0; i<collections.length; i++){
       if(collections[i].get('uid') == currentUid){
+        var a = collections[i].data().toString();
+        bool hasAppointment = a.contains("Appointments");
+
+        if (!hasAppointment) {
+          return appointmentList;
+        }
+
         Map aptMap = collections[i].get('Appointments');
 
         for(var v in aptMap.keys) {
@@ -186,12 +182,7 @@ class AuthModel extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       print(e.message.toString());
 
-
       Fluttertoast.showToast(msg: e.message.toString());
-      // showDialog(context: globalContext, builder: (_) => CupertinoAlertDialog(
-      //   title: Text(e.message.toString()),
-      // ),
-      // );
     }
   }
 
@@ -207,6 +198,7 @@ class AuthModel extends ChangeNotifier {
         'uid': user?.uid,
         'firstName': firstName,
         'lastName': lastName,
+        'Appointments': Map(),
       }
       );
       print("Signed Up");

@@ -71,6 +71,9 @@ class _CalendarState extends State<Calendar> {
 
   setMarkedMap() async {
     userCalendarEvents = await globalContext.read<AuthModel>().setMarkedMapEvents();
+    // setState(() {
+    //
+    // });
   }
 
   void _showAppointments(DateTime inDate, BuildContext inContext, bool showButton) async {

@@ -11,6 +11,10 @@ import 'package:flutter_sms/flutter_sms.dart';
 
 
 
+setMarkedMap() async {
+  userCalendarEvents = await globalContext.read<AuthModel>().setMarkedMapEvents();
+}
+
 toCalendar(title){
   Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => Calendar(title)));
 }
@@ -35,7 +39,13 @@ toMessage() async {
   }
 }
 
-class Home extends StatelessWidget{
+class Home extends StatefulWidget {
+
+  @override
+  _HomeState createState() =>  _HomeState();
+}
+
+class _HomeState extends State<Home> {
   displayToast(){
     Fluttertoast.showToast(msg: 'Selected');
   }
@@ -56,13 +66,25 @@ class Home extends StatelessWidget{
 
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
+  initState() {
+    super.initState();
+    loadDataFromModel();
+  }
+
+  void loadDataFromModel() async {
+    await globalContext.read<AuthModel>().setFirstNameFromCollection();
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     globalContext = context;
     globalContext.read<AuthModel>().setFirstNameFromCollection();
     String firstName = globalContext.read<AuthModel>().currentUserFirstName;
-
+    setState(() {
+     firstName = firstName;
+    });
+    setMarkedMap();
 
     return Scaffold(
       key: scaffoldKey,
