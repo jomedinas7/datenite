@@ -149,6 +149,8 @@ class _HomeState extends State<Home> {
               SizedBox(height: 50)
             ],)),Positioned(left: 5, top: 35, child: IconButton(icon: Icon(Icons.menu, color: Colors.white, size: 35),
               onPressed: ()=> scaffoldKey.currentState!.openDrawer())),
+          Positioned(right: 5, top: 35, child: IconButton(icon: Icon(Icons.favorite, color: Colors.white, size: 35),
+              onPressed: ()=> scaffoldKey.currentState!.openDrawer())),
         ]));
   }
 

@@ -60,14 +60,6 @@ class _MyAppPageState extends State<MyAppPage> {
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
-  // verifyUser(){
-  //   DatabaseReference flutterTest = FirebaseDatabase.instance.reference().child('test');
-  //   flutterTest.set("This is a flutter test from the database ${Random().nextInt(100)}");
-  //   print(usernameController.text);
-  //   // globalContext = context;
-  //   Navigator.push(globalContext, MaterialPageRoute(builder: (globalContext) => Home()));
-  // }
-
   @override
   Widget build(BuildContext context) {
 

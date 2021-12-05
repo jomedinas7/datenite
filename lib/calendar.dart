@@ -438,17 +438,62 @@ class _CalendarState extends State<Calendar> {
               if (widget.title != "My Dates") Positioned(left: -8, top: 55, child: IconButton(icon: Icon(Icons.chevron_left_rounded, color: Colors.white, size: 55),
                   onPressed: () {
                     Navigator.pop(context);
-                  }
+                  },
+                  tooltip: "Back",
                   )),
               if (widget.title == "My Dates") Positioned(left: -8, top: 55,
                   child: IconButton(icon:
                   Icon(Icons.menu, color: Colors.white, size: 55),
+                  tooltip: "Home",
                   onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => Home()));
                   }
               )),
+              Positioned(right: 16, top: 60, child:
+                  // Container(
+                  // child: MouseRegion(
+                  // onEnter: _mouseEnter,
+                  // onExit: _mouseExit,
+                  // child: Container(
+                  // child: Column(
+                  // mainAxisAlignment: MainAxisAlignment.center,
+                  // children: <Widget>[
+                  IconButton(
+                  icon: Icon(Icons.favorite, color: Colors.white, size: 45),
+                  hoverColor: Colors.red,
+                  onPressed: (){
+                    print("HERE");
+                  },
+                    tooltip: "Favorites",
+                  ),
+                  // ],
+                  // ),
+                  // ),
+                  // ),
+                  // ),
+              )
+              // IconButton(icon:
+              // Icon(Icons.favorite, color: Colors.white, size: 45),
+              //
+              //     onPressed: () {},)),
             ],
         ),
     );
+  }
+
+  void _mouseEnter(PointerEvent details) {
+    print("Favorites");
+    setState(() {
+      Fluttertoast.showToast(msg: "Favorites",
+          gravity: ToastGravity.BOTTOM,
+          backgroundColor: Colors.black,
+          textColor: CupertinoColors.white
+      );
+    });
+  }
+  void _mouseExit(PointerEvent details) {
+    setState(() {
+      print("hi");
+    });
   }
 }
