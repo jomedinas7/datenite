@@ -1,7 +1,6 @@
 import 'package:datenite/Movies/MoviesList.dart';
 import 'package:datenite/Movies/moviesClient.dart';
 import 'package:datenite/date_creation.dart';
-import 'package:datenite/home.dart';
 import 'package:datenite/locationClient.dart';
 import 'package:datenite/main.dart';
 import 'package:datenite/widgets.dart';

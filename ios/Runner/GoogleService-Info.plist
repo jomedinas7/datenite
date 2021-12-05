@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>699610713668-f1gi9durd99l71o839javuqaghigdrcv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.699610713668-f1gi9durd99l71o839javuqaghigdrcv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDZkZAGMFjLY2QOCAuGKArvFIBUwJm6W1A</string>
+	<key>GCM_SENDER_ID</key>
+	<string>699610713668</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.datenite</string>
+	<key>PROJECT_ID</key>
+	<string>datenitejw</string>
+	<key>STORAGE_BUCKET</key>
+	<string>datenitejw.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:699610713668:ios:482e22ce280ccba76df611</string>
+	<key>DATABASE_URL</key>
+	<string>https://datenitejw-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

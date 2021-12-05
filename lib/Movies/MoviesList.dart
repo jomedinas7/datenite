@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 
 import '../widgets.dart';
 import 'package:datenite/calendar.dart';
-import 'package:datenite/date_creation.dart';
 import 'moviesModel.dart';
 
 class MoviesList extends StatelessWidget{
@@ -121,7 +120,7 @@ class FilmButton extends StatelessWidget{
                                 ', ' + client.cinema.state.toString();
                             Appointment currentApt = Appointment(film.name, currentDate, film.showtimes[index], address, 'Movie',null, film.posterUrl);
                             if (newDate == false){
-                              Appointment currentApt = Appointment(film.name, currentDate, film.showtimes[index], address, 'Movie', currentAptId, film.posterUrl);
+                               currentApt = Appointment(film.name, currentDate, film.showtimes[index], address, 'Movie', currentAptId, film.posterUrl);
                             }
                             print("FOURTH CALL_________");
                             print(currentAptId);
