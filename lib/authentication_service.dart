@@ -44,9 +44,6 @@ class AuthModel extends ChangeNotifier {
 
       if(collections[i].get('uid') == currentUid){
         Map aptMap = collections[i].get('Appointments');
-        //TODO: Need to change this from length to
-        //TO-DONE
-        // the next available appointment # for when an item is deleted
         int nextAvailable = aptMap.length+1;
         for (int j =1; j<200; j++){
           if(aptMap['appointment$j']!=null){

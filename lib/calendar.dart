@@ -28,6 +28,24 @@ import 'home.dart';
 DateTime currentDate = DateTime.now();
 List userCalendarEvents = [];
 
+EventList<Event> markedDateMap = EventList<Event>(
+    events: {
+      DateTime(2021, 11, 30): [
+        Event(
+          date: DateTime(2021, 11, 30),
+          title: 'Event 1',
+          icon: const Icon(Icons.circle),
+          dot: Container(
+            margin: EdgeInsets.symmetric(horizontal: 1.0),
+            decoration: BoxDecoration(color: Colors.red, border: Border.all(color: Colors.black)),
+            // color: Colors.red,
+            height: 5.0,
+            width: 5.0,
+          ),
+        ),]
+    }
+);
+
 class Appointment {
   Appointment(String title, DateTime date, String time, String address, String type, [id, String image = '']){
     this.title = title;
@@ -71,14 +89,12 @@ class _CalendarState extends State<Calendar> {
 
   setMarkedMap() async {
     userCalendarEvents = await globalContext.read<AuthModel>().setMarkedMapEvents();
-    // setState(() {
-    //
-    // });
   }
 
   void _showAppointments(DateTime inDate, BuildContext inContext, bool showButton) async {
     showModalBottomSheet(context: inContext,
         builder: (BuildContext inContext) {
+          bool deleted = false;
           return Scaffold(
               body: Container(child: Padding(
                   padding: EdgeInsets.all(10), child: GestureDetector(
@@ -121,7 +137,6 @@ class _CalendarState extends State<Calendar> {
                                               ]),
                                               subtitle: Text('$apptAddress', style: TextStyle(color: Colors.black, fontStyle: FontStyle.italic)),
                                               onTap: () async {
-                                                print("VERY FIRST CALL______________________________________________");
                                                 print(appointment.id);
                                                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => DateCreation(appointment, false, false))); // prevent from going to movies if just editing time for restaurant
                                               })
@@ -238,7 +253,21 @@ class _CalendarState extends State<Calendar> {
                 child: const Text('Delete'),
                 onPressed: () {
                   globalContext.read<AuthModel>().deleteAppointment(appointment);
+                  setState(() {
+                    print(appointment.id);
+                    print("DELETE____O))_)_____");
+                    print(markedDateMap.events);
+                    int index = -1;
+                    for (int i =0; i<userCalendarEvents.length; i++) {
+                      if (userCalendarEvents[i].id == appointment.id) {
+                        index = i;
+                      }
+                    }
+                    userCalendarEvents.removeAt(index);
+                  });
+
                   Navigator.of(alertContext).pop();
+                  Navigator.pop(context); //FIXME: temp solution for updating delete
                   ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                           backgroundColor: Colors.red,
@@ -256,27 +285,12 @@ class _CalendarState extends State<Calendar> {
 
   @override
   Widget build(BuildContext context) {
-    EventList<Event> markedDateMap = EventList<Event>(
-      events: {
-        DateTime(2021, 11, 30): [
-          Event(
-            date: DateTime(2021, 11, 30),
-            title: 'Event 1',
-            icon: const Icon(Icons.circle),
-            dot: Container(
-              margin: EdgeInsets.symmetric(horizontal: 1.0),
-              decoration: BoxDecoration(color: Colors.red, border: Border.all(color: Colors.black)),
-              // color: Colors.red,
-              height: 5.0,
-              width: 5.0,
-            ),
-          ),]
-      }
-    );
+
 
 
     markedDateMap.clear();
-    setMarkedMap();
+    // setMarkedMap();
+    // markedDateMap = use
 
     for (int i =0; i<userCalendarEvents.length; i++) {
       Color color = Colors.red;
