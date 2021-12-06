@@ -1,10 +1,10 @@
-import 'package:datenite/sign_up_page.dart';
+import 'package:datenite/Authentication/sign_up_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'sign_up_page.dart';
+import 'Authentication/sign_up_page.dart';
 import 'home.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'authentication_service.dart';
+import 'Authentication/authentication_service.dart';
 import 'package:provider/provider.dart';
 
 late BuildContext globalContext;

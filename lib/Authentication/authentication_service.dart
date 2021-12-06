@@ -1,12 +1,12 @@
 import 'package:datenite/calendar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'main.dart';
+import '../main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'home.dart';
+import '../home.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'calendar.dart';
+import '../appointment.dart';
 
 class AuthModel extends ChangeNotifier {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;

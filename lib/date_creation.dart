@@ -3,9 +3,9 @@ import 'package:datenite/calendar.dart';
 import 'package:datenite/widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'authentication_service.dart';
+import 'Authentication/authentication_service.dart';
 import 'package:provider/provider.dart';
-import 'main.dart';
+import 'appointment.dart';
 
 
 String currentAptId = '';
@@ -32,7 +32,6 @@ class _DateCreationState extends State<DateCreation> {
   final TextEditingController _contentEditingController = TextEditingController();
   final TextEditingController _addressEditingController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-
 
 
   _DateCreationState(Appointment currentAppointment, [newDate]) {
@@ -136,7 +135,7 @@ class _DateCreationState extends State<DateCreation> {
             if (newDate) {
               userCalendarEvents.add(currentAppointment);
               print("adding appointment");
-              globalContext.read<AuthModel>().addAppointment(
+              AuthModel().addAppointment(
                   currentAppointment);
             } else {
               print("updating appointment");
@@ -145,7 +144,7 @@ class _DateCreationState extends State<DateCreation> {
               }
               print(currentAptId);
               print(currentAppointment.id);
-              globalContext.read<AuthModel>().updateAppointment(
+              AuthModel().updateAppointment(
                   currentAppointment);
             }
             if (!widget.toMovie) {

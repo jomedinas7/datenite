@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../widgets.dart';
 import 'package:datenite/date_creation.dart';
-import 'RestaurantsList.dart';
+import '../appointment.dart';
 
 var client = RestaurantsClient();
 

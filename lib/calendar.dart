@@ -12,17 +12,12 @@ import "package:flutter_calendar_carousel/classes/event_list.dart";
 import 'package:flutter_calendar_carousel/flutter_calendar_carousel.dart' show CalendarCarousel;
 import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'main.dart';
+
 import 'package:provider/provider.dart';
-import 'authentication_service.dart';
+import 'Authentication/authentication_service.dart';
 import 'date_creation.dart';
 import 'home.dart';
-
-//TODONE: make sure to push movie date when creating a movie
-//TODONE: make sure edit on movies will update properly
-//TODONE: add functionality to choose a new showtime button
-//TODO: pass an appointment to something new page and change what's displayed
-// based on the type of appointment
+import 'appointment.dart';
 
 
 DateTime currentDate = DateTime.now();
@@ -46,30 +41,6 @@ EventList<Event> markedDateMap = EventList<Event>(
     }
 );
 
-class Appointment {
-  Appointment(String title, DateTime date, String time, String address, String type, [id, String image = '']){
-    this.title = title;
-    this.date = date;
-    this.time = time;
-    this.address = address;
-    this.type = type;
-    if (id!=null){
-      this.id = id;
-    }
-    if (image!=''){
-      this.image = image;
-    }
-  }
-  String image = '';
-  String id = 'appointment#';
-  String title = '';
-  DateTime date = DateTime.now();
-  String time = '';
-  String address = '';
-  String type = '';
-  bool hasTime() => time != '';
-}
-
 class Calendar extends StatefulWidget {
 
   final String title;
@@ -88,7 +59,7 @@ class _CalendarState extends State<Calendar> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
 
   setMarkedMap() async {
-    userCalendarEvents = await globalContext.read<AuthModel>().setMarkedMapEvents();
+    userCalendarEvents = await AuthModel().setMarkedMapEvents();
   }
 
   void _showAppointments(DateTime inDate, BuildContext inContext, bool showButton) async {
@@ -252,7 +223,7 @@ class _CalendarState extends State<Calendar> {
               TextButton(
                 child: const Text('Delete'),
                 onPressed: () {
-                  globalContext.read<AuthModel>().deleteAppointment(appointment);
+                  AuthModel().deleteAppointment(appointment);
                   setState(() {
                     print(appointment.id);
                     print("DELETE____O))_)_____");
@@ -450,14 +421,6 @@ class _CalendarState extends State<Calendar> {
                   }
               )),
               Positioned(right: 16, top: 60, child:
-                  // Container(
-                  // child: MouseRegion(
-                  // onEnter: _mouseEnter,
-                  // onExit: _mouseExit,
-                  // child: Container(
-                  // child: Column(
-                  // mainAxisAlignment: MainAxisAlignment.center,
-                  // children: <Widget>[
                   IconButton(
                   icon: Icon(Icons.favorite, color: Colors.white, size: 45),
                   hoverColor: Colors.red,
@@ -466,16 +429,7 @@ class _CalendarState extends State<Calendar> {
                   },
                     tooltip: "Favorites",
                   ),
-                  // ],
-                  // ),
-                  // ),
-                  // ),
-                  // ),
               )
-              // IconButton(icon:
-              // Icon(Icons.favorite, color: Colors.white, size: 45),
-              //
-              //     onPressed: () {},)),
             ],
         ),
     );

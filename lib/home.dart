@@ -6,8 +6,9 @@ import 'package:permission_handler/permission_handler.dart';
 import 'calendar.dart';
 import 'main.dart';
 import 'package:provider/provider.dart';
-import 'authentication_service.dart';
+import 'Authentication/authentication_service.dart';
 import 'package:flutter_sms/flutter_sms.dart';
+import 'Places/nearby.dart';
 
 
 
@@ -17,6 +18,10 @@ setMarkedMap() async {
 
 toCalendar(title){
   Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => Calendar(title)));
+}
+
+toNearbyPage(){
+  Navigator.of(globalContext).push(MaterialPageRoute(builder: (globalContext) => NearbyPage()));
 }
 
 toMessage() async {
@@ -143,7 +148,7 @@ class _HomeState extends State<Home> {
               SizedBox(height: 30),
               MenuOption('Movie Date', 'Keep it simple', toCalendar, 'images/film.png'),
               SizedBox(height: 30),
-              MenuOption('Something New', 'Be original', toCalendar, 'images/art.png'),
+              MenuOption('Something New', 'Be original', toNearbyPage, 'images/art.png'),
               SizedBox(height: 30),
               MenuOption('Ask Your Date', 'Send them a link', toMessage, 'images/defaultUser.png'),
               SizedBox(height: 50)

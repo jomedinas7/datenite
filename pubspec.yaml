@@ -44,6 +44,7 @@ dependencies:
   location: ^4.3.0
   flutter_sms: ^2.3.2
   permission_handler: ^8.2.0
+  google_place: ^0.4.3
   flutter:
     sdk: flutter
 
